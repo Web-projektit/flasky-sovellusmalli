@@ -179,8 +179,7 @@ def change_email(token):
 @login_required
 @admin_required
 def faker():
-    fake_users(25)
-    f_users = User.query.all()
-    print(str(f_users))
-
+    f_users = fake_users(25)
+    # f_users = User.query.all()
+    # print(str(f_users))
     return render_template('auth/fake.html', fake_users=f_users)
