@@ -3,6 +3,8 @@ from flask_login import login_user, logout_user, login_required, \
     current_user
 from . import auth
 from .. import db
+from ..decorators import admin_required
+from ..fake import users as fake_users
 from ..models import User
 from ..email import send_email
 from .forms import LoginForm, RegistrationForm, ChangePasswordForm,\
@@ -172,3 +174,13 @@ def change_email(token):
     else:
         flash('Invalid request.')
     return redirect(url_for('main.index'))
+
+@auth.route('/faker')
+@login_required
+@admin_required
+def faker():
+    fake_users(25)
+    f_users = User.query.all()
+    print(str(f_users))
+
+    return render_template('auth/fake.html', fake_users=f_users)
