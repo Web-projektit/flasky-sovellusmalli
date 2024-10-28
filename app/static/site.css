@@ -1,0 +1,19 @@
+html, body { height: 100%;}
+
+body > footer {
+    position: sticky;
+    top: 100vh;
+  }
+  
+footer {
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    color: #fff;
+    background-color: #04aa6d;
+  }
+  
+.btn-close {float:right;}
+
+
+  
