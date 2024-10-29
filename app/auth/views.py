@@ -1,4 +1,4 @@
-from flask import render_template, redirect, current_app, request, url_for, flash
+from flask import render_template, redirect, current_app, request, url_for, flash, jsonify
 from flask_login import login_user, logout_user, login_required, \
     current_user
 from . import auth
@@ -182,4 +182,8 @@ def faker():
     f_users = fake_users(25)
     # f_users = User.query.all()
     # print(str(f_users))
-    return render_template('auth/fake.html', fake_users=f_users)
+    if f_users:
+        return render_template('auth/fake.html', fake_users=f_users)
+    else:
+        return jsonify({"error": "IntegrityError: useita samoja käyttäjätunnuksia"}), 400
+  
