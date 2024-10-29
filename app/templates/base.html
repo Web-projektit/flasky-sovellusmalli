@@ -47,8 +47,9 @@
 
 {% block content %}
 <div class="container">
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
+    {% for category,message in get_flashed_messages(with_categories=True) %}
+    {% set category = 'warning' if not category or category == 'message' else category %}
+    <div class="alert alert-{{ category }}">
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         {{ message }}
     </div>

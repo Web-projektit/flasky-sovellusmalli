@@ -14,6 +14,7 @@ def users(count=100):
     while i < count:
         u = User(email=fake.unique.email(),
                  username=fake.unique.user_name(),
+                 # Testaa IntegrityError-tilanne:
                  # username = 'tupla',
                  password='password',
                  confirmed=random.choice([True, False]),
@@ -23,19 +24,25 @@ def users(count=100):
                  # member_since=fake.past_date()
                  )
         # if u.username in [user.username for user in fake_users]:
-        #    continue
+        #    continue     
+        # with db.session.no_autoflush:, ei toimi, 
+        # joten se on korvattu alustuksella db = SQLAlchemy(session_options={"autoflush": False})    
+        
         db.session.add(u)
         fake_users.append(u)
         print("fake_user: "+str(u))
         i += 1
+
     try:
-        # Huom. tämä ei vielä riitä poistamaan virhettä
-        # with db.session.no_autoflush:
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
         fake_users = []
         print("virhe: useita samoja käyttäjätunnuksia")
+    except Exception as e:
+        db.session.rollback()
+        fake_users = []
+        print(f"An error occurred: {e}")
     print("fake_users: "+str(fake_users))
     return fake_users
 
