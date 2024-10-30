@@ -15,6 +15,8 @@ class Config:
     SOVELLUSMALLI_MAIL_SENDER = 'Sovellusmalli Admin <sovellusmalli@example.com>'
     SOVELLUSMALLI_ADMIN = os.environ.get('SOVELLUSMALLI_ADMIN')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    FS_POSTS_PER_PAGE = 25
+    WTF_CSRF_ENABLED = True
 
     @staticmethod
     def init_app(app):
