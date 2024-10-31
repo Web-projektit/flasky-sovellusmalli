@@ -29,6 +29,11 @@ def create_app(config_name):
     csrf.init_app(app)
     
     login_manager.init_app(app)
+    # Set Moment.js locale to Finnish
+    # @app.context_processor
+    # def inject_moment_locale():
+    #    return {'moment_locale': 'fi'}
+
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)

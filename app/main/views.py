@@ -1,14 +1,28 @@
 from flask import render_template,request,flash,redirect,url_for,jsonify,current_app
-from flask_login import login_required
+from flask_login import login_required,current_user
 from ..decorators import admin_required
 from ..models import User
+from .forms import ProfileForm
 from app import db
 from . import main
+from sqlalchemy import text
 
 
 @main.route('/')
 def index():
     return render_template('index.html')
+
+@main.route('/edit_profile', methods=['GET', 'POST'])  
+@login_required
+def edit_profile():
+    user = User.query.get_or_404(current_user.id)
+    form = ProfileForm(obj=user)
+    if form.validate_on_submit():
+        form.populate_obj(user)
+        db.session.commit()
+        flash('Your profile has been updated.', 'success')
+        return redirect(url_for('.user', username=current_user.username))
+    return render_template('edit_profile.html', form=form)
 
 @main.route('/edit_profile_admin', methods=['GET', 'POST']) 
 @login_required
@@ -16,7 +30,10 @@ def index():
 def edit_profile_admin():
     return "rakenteilla"
     
- 
+@main.route('/user', methods=['GET'])
+@login_required
+def user(): 
+    return render_template('user.html',user=current_user,kuva=False)   
 
 @main.route('/users', methods=['GET', 'POST'])
 @login_required
@@ -40,7 +57,7 @@ def users():
             query = query_start + query_values + query_end
             # print("\n"+query+"\n")
             # result = db.session.execute('SELECT * FROM my_table WHERE my_column = :val', {'val': 5})
-            db.session.execute(query)
+            db.session.execute(text(query))
             db.session.commit()
             # return query
             #return str(request.form.getlist('users')) + \

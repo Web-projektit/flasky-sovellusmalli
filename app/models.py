@@ -3,7 +3,8 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from . import db, login_manager
-from datetime import datetime
+import datetime
+from datetime import timezone
 
 class Permission:
     FOLLOW = 1
@@ -71,8 +72,10 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
     name = db.Column(db.String(64))
-    member_since = db.Column(db.DateTime(), default=datetime.utcnow)
-    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+    location = db.Column(db.String(64))
+    # Huom. Oletuarvon migraatiota ei ole vielä testattu
+    member_since = db.Column(db.DateTime(), default=timezone.utc, server_default=db.func.now())
+    last_seen = db.Column(db.DateTime())
     img = db.Column(db.String(64))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(255))
