@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% import "auth/wtf.html" as wtf %}
+
+{% block title %}Flask-sovellus - Edit Profile{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Muokkaa profiilia</h1>
+</div>
+
+<form id="apulomake">
+<label for="file-input" class="label-button">Valitse profiilikuva</label>
+<button data-toggle="button" type="button" id="file-clear">Poista</button>
+<button data-toggle="button" type="button" id="file-reload" disabled>Palauta</button><br>
+<input accept="image/*" type="file" id="file-input" name="file" style="display:none;">
+</form>
+{% if not kuva %}
+<img class="profiilikuva" onclick="alert(this.src)" id="preview" src="{{ url_for('static',filename='default_profile.png') }}">
+{% elif config['KUVAPALVELU'] == 'S3' %}
+<img class="profiilikuva" onclick="alert(this.src)" id="preview" src="{{ kuva }}">
+{% else %}
+<img class="profiilikuva" onclick="alert(this.src)" id="preview" src="{{ url_for('main.img',filename=kuva) }}">
+{% endif %}
+<div id="invalid-image" class="text-danger"></div>
+
+<div class="col-md-4">
+{{ wtf.quick_form(form,novalidate=True,extra_classes='needs-validation') }}
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+let preview_org    
+const img_org = "{{ current_user.img }}"
+</script>
+{% if not kuva %}
+<script>
+preview_org = "{{ url_for('static', filename='default_profile.png') }}"
+</script>
+{% endif %}    
+{% if config['KUVAPALVELU'] == 'S3' %}
+<script>
+if (!preview_org) preview_org = "{{ kuva }}"
+</script>
+<script src="{{ url_for('static', filename='S3upload.js') }}"></script>
+{% else %}
+<script>
+if (!preview_org) preview_org = "{{ url_for('main.img',filename=kuva) }}"
+</script>
+<script src="{{ url_for('static', filename='localUpload.js') }}"></script>
+{% endif %}
+{% endblock %}

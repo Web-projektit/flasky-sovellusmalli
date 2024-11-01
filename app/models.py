@@ -73,6 +73,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
+    about_me = db.Column(db.Text())
     # Huom. Oletuarvon migraatiota ei ole vielä testattu
     member_since = db.Column(db.DateTime(), default=timezone.utc, server_default=db.func.now())
     last_seen = db.Column(db.DateTime())
