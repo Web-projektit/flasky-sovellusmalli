@@ -42,3 +42,6 @@ nosetests.xml
 venv
 .env
 .flaskenv
+profiilikuvat/*
+!profiilikuvat/default_profile.png
+

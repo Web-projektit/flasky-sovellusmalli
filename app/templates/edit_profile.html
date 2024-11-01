@@ -5,9 +5,41 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Omat tiedot</h1>
+<h1>Omat tiedot</h1>
 </div>
 <div class="col-md-4">
 {{ wtf.quick_form(form,novalidate=True,extra_classes='needs-validation') }}
 </div>
+{% if not kuva %}
+<img class="profiilikuva" onclick="alert(this.src)" id="preview" src="{{ url_for('static',filename='default_profile.png') }}">
+{% else %}
+<img class="profiilikuva" onclick="alert(this.src)" id="preview" src="{{ url_for('.img',filename=kuva) }}">
+{% endif %}
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+const previewFile = () => {
+    const preview = document.querySelector('#preview');
+    const file = document.querySelector('input[type=file]').files[0];
+    console.log("file:",file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+        preview.src = reader.result;
+        }
+    if (file) {
+        reader.readAsDataURL(file);
+        } 
+    else {
+        preview.src = "";
+    }
+}
+
+const esikatselu = file => {  
+    document.querySelector('#preview').src = URL.createObjectURL(file);
+    }
+
+document.querySelector('#img').onchange = previewFile;
+</script>
 {% endblock %}
