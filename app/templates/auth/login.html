@@ -7,10 +7,9 @@
 <div class="page-header">
     <h1>Login</h1>
 </div>
-<div class="col-md-4">
+<div class="lomake col-md-10 col-lg-8">
     {{ wtf.quick_form(form,novalidate=True,extra_classes='needs-validation') }}
-    <br>
-    <p>Forgot your password? <a href="{{ url_for('auth.password_reset_request') }}">Click here to reset it</a>.</p>
-    <p>New user? <a href="{{ url_for('auth.register') }}">Click here to register</a>.</p>
 </div>
+<p>Forgot your password? <a href="{{ url_for('auth.password_reset_request') }}">Click here to reset it</a>.</p>
+<p>New user? <a href="{{ url_for('auth.register') }}">Click here to register</a>.</p>
 {% endblock %}
