@@ -16,13 +16,13 @@ def before_request():
     app = current_app._get_current_object()
     app.logger.debug('auth.before_request,endpoint %s', request.endpoint)
     app.logger.debug('auth.before_request,blueprint %s', request.blueprint)
- 
-    if current_user.is_authenticated \
-            and not current_user.confirmed \
+    if current_user.is_authenticated:
+        current_user.ping()   
+        if not current_user.confirmed \
             and request.endpoint \
             and request.blueprint != 'auth' \
             and request.endpoint != 'static':
-        return redirect(url_for('auth.unconfirmed'))
+                return redirect(url_for('auth.unconfirmed'))
 
 
 @auth.route('/unconfirmed')

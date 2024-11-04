@@ -13,6 +13,7 @@ def users(count=100):
     i = 0
     while i < count:
         u = User(email=fake.unique.email(),
+                 name=fake.name(),
                  username=fake.unique.user_name(),
                  # Testaa IntegrityError-tilanne:
                  # username = 'tupla',

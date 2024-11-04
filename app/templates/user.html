@@ -4,8 +4,8 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>{{ user.username }}</h1>
-
+<h1>{{ user.username }}</h1>
+</div>
     {% if kuva %}
     <img src="{{ url_for('main.img',filename=kuva) }}" class="profiilikuva">    
     {% endif %}
@@ -16,7 +16,7 @@
         {% if user.location %}
             from <a href="http://maps.google.com/?q={{ user.location }}">{{ user.location }}</a>
  
-            <div id="map" style="height: 300px; width: 100%; display:none;"></div>
+            <div id="map" style="height: 100px; width: 300px; display:none;"></div>
             <script>
                 async function initMap() {
                     const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");

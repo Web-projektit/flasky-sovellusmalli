@@ -22,6 +22,14 @@ margin: 40px auto;
 
 .btn-close {float:right;}
 
+.profiili-header {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  justify-content: space-between;
+}
+
 .profiili {
   display: flex;
   align-items: flex-start;
@@ -59,6 +67,12 @@ margin: 40px auto;
 .lomake {
 margin: 20px 0;
 }
+
+.painikkeet {
+  display: flex;
+  justify-content: flex-end;
+}
+
 
 .needs-validation .btn {
 margin-top: 10px;

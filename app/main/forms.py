@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import FileField, StringField, SubmitField, HiddenField
+from wtforms import BooleanField, FileField, StringField, SubmitField, HiddenField, SelectField
 from wtforms.validators import DataRequired, Length, Email, Regexp
 from wtforms import ValidationError
 from flask_wtf.file import FileAllowed
@@ -37,4 +37,15 @@ class ProfileForm(FlaskForm):
         if current_user.username != new and User.query.filter_by(username=new).first():
             raise ValidationError('Username already in use.')
 
+class ProfileFormAdmin(FlaskForm):
+    id = HiddenField('Id')
+    name = StringField('Name', render_kw={'disabled': True})
+    username = StringField('Username', render_kw={'disabled': True})
+    email = StringField('Email', render_kw={'disabled': True})
+    location = StringField('Location', render_kw={'disabled': True})
+    about_me = StringField('About me', render_kw={'disabled': True})
+    role_id = SelectField('Role', coerce=int, choices=[(1, 'User'), (2, 'Moderator'), (3, 'Administrator')])
+    active = BooleanField('Active')
+    submit = SubmitField('Save profile')    
 
+    

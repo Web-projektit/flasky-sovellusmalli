@@ -2,7 +2,7 @@ from flask import render_template,request,flash,redirect,url_for,jsonify,current
 from flask_login import login_required,current_user
 from ..decorators import admin_required
 from ..models import User
-from .forms import ProfileForm
+from .forms import ProfileForm,ProfileFormAdmin
 from app import db
 from . import main
 from sqlalchemy import text
@@ -108,7 +108,26 @@ def edit_profile():
 @login_required
 @admin_required
 def edit_profile_admin():
-    return "rakenteilla"
+    app = current_app._get_current_object()
+    user = User.query.get_or_404(request.args.get('id'))
+    kuva = tee_kuvanimi(user.id,user.img) if user.img else ''
+    form = ProfileFormAdmin(obj=user)
+    print("FORM:"+str(form))
+    if form.validate_on_submit():
+        form.populate_obj(user)
+        try:
+            # Tulosta MySQL-kyselyn arvot
+            for key, value in vars(user).items():
+                print(f'{key}: {value}')     
+            db.session.commit()
+            flash('Käyttäjän tiedot on päivitetty.', 'success')
+            return redirect(url_for('.users'))
+        except Exception as e:
+            db.session.rollback()
+            flash('Virhe tallennuksessa.', 'danger')
+            current_app.logger.info(e)
+            return render_template('edit_profile_admin.html', form=form,user=user,kuva=kuva,API_KEY=app.config.get('GOOGLE_API_KEY'))
+    return render_template('edit_profile_admin.html', form=form,user=user,kuva=kuva,API_KEY=app.config.get('GOOGLE_API_KEY'))
     
 @main.route('/user', methods=['GET'])
 @login_required
