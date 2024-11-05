@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, FileField, StringField, SubmitField, HiddenField, SelectField
-from wtforms.validators import DataRequired, Length, Email, Regexp
+from wtforms import BooleanField, FileField, StringField, SubmitField, HiddenField, SelectField, DateTimeLocalField
+from wtforms.validators import DataRequired, Length, Email, Regexp, Optional
 from wtforms import ValidationError
 from flask_wtf.file import FileAllowed
 from app.models import User
@@ -44,6 +44,8 @@ class ProfileFormAdmin(FlaskForm):
     email = StringField('Email', render_kw={'disabled': True})
     location = StringField('Location', render_kw={'disabled': True})
     about_me = StringField('About me', render_kw={'disabled': True})
+    member_since = DateTimeLocalField('Member since', format='%Y-%m-%dT%H:%M', validators=[Optional()])
+    last_seen = DateTimeLocalField('Last seen', render_kw={'disabled': True})
     role_id = SelectField('Role', coerce=int, choices=[(1, 'User'), (2, 'Moderator'), (3, 'Administrator')])
     active = BooleanField('Active')
     submit = SubmitField('Save profile')    

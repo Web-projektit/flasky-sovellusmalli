@@ -1,6 +1,6 @@
 from flask import render_template,request,flash,redirect,url_for,jsonify,current_app,send_from_directory
 from flask_login import login_required,current_user
-from ..decorators import admin_required
+from ..decorators import admin_required,debuggeri
 from ..models import User
 from .forms import ProfileForm,ProfileFormAdmin
 from app import db
@@ -9,10 +9,10 @@ from sqlalchemy import text
 import os
 from werkzeug.utils import secure_filename
 
-
+@debuggeri
 def shorten(filename):
     name, extension = os.path.splitext(filename)
-    print("SHORTEN:"+name+" "+extension)
+    # print("SHORTEN:"+name+" "+extension)
     length = 64 - len(extension)
     return name[:length] + extension
 
@@ -110,15 +110,15 @@ def edit_profile():
 def edit_profile_admin():
     app = current_app._get_current_object()
     user = User.query.get_or_404(request.args.get('id'))
+    # Tulosta MySQL-kyselyn arvot
+    for key, value in vars(user).items():
+        print(f'{key}: {value}')   
     kuva = tee_kuvanimi(user.id,user.img) if user.img else ''
     form = ProfileFormAdmin(obj=user)
     print("FORM:"+str(form))
     if form.validate_on_submit():
         form.populate_obj(user)
-        try:
-            # Tulosta MySQL-kyselyn arvot
-            for key, value in vars(user).items():
-                print(f'{key}: {value}')     
+        try: 
             db.session.commit()
             flash('Käyttäjän tiedot on päivitetty.', 'success')
             return redirect(url_for('.users'))
