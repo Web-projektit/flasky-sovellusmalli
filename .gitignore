@@ -43,6 +43,7 @@ venv
 .env
 .flaskenv
 *.json
+debug_log.txt
 profiilikuvat/*
 !profiilikuvat/default_profile.png
 
