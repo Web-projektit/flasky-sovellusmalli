@@ -19,7 +19,7 @@ class Config:
     FS_POSTS_PER_PAGE = 25
     WTF_CSRF_ENABLED = True
     UPLOAD_FOLDER = 'profiilikuvat/'
-    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    ALLOWED_EXTENSIONS = ['png','jpg','jpeg','gif']
     MAX_CONTENT_LENGTH = 2 * 1024 * 1024
     KUVAPOLKU = os.path.join(os.path.abspath('.'),UPLOAD_FOLDER)
     print("KUVAPOLKU: "+KUVAPOLKU)

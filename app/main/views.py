@@ -16,11 +16,12 @@ def shorten(filename):
     length = 64 - len(extension)
     return name[:length] + extension
 
-def allowed_file(filename):
+'''def allowed_file(filename):
     app = current_app._get_current_object()
     ALLOWED_EXTENSIONS = app.config['ALLOWED_EXTENSIONS']
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+'''
 
 def tee_kuvanimi(id,kuva):
     return str(id) + '_' + kuva
@@ -75,7 +76,8 @@ def edit_profile():
             print("file.filename:"+kuvanimi)
             if current_user.img and kuvanimi != current_user.img:
                 poista_vanha_kuva(current_user.id,current_user.img)
-            if kuvanimi and allowed_file(kuvanimi):
+            # if kuvanimi and allowed_file(kuvanimi):
+            if kuvanimi:    
                 # Lomakkeelta lähetettynä paikallinen tallennus,
                 # S3- ja Azure-tallennus tehty erikseen Javascriptillä
                 kuvanimi = shorten(secure_filename(kuvanimi))

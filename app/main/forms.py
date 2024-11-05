@@ -5,7 +5,17 @@ from wtforms import ValidationError
 from flask_wtf.file import FileAllowed
 from app.models import User
 from flask_login import current_user
+from flask import current_app
+from werkzeug.datastructures import FileStorage
 
+app = current_app._get_current_object()
+ALLOWED_EXTENSIONS = app.config['ALLOWED_EXTENSIONS']
+ 
+def check_image_size(form, field):  
+    MAX_FILE_SIZE = current_app.config.get('MAX_FILE_SIZE')  # 2 MB default
+    file: FileStorage = field.data
+    if file and file.content_length > MAX_FILE_SIZE:
+        raise ValidationError(f"File size must be under {MAX_FILE_SIZE / (1024 * 1024)} MB.")
 
 class NameForm(FlaskForm):
     name = StringField('What is your name?', validators=[DataRequired()])
@@ -21,7 +31,7 @@ class ProfileForm(FlaskForm):
         ])
     location = StringField('Location', validators=[DataRequired()])
     about_me = StringField('About me', validators=[DataRequired()])
-    file = FileField('Profile picture', validators=[FileAllowed(['jpg','png','img'], 'Images only!')])
+    file = FileField('Profile picture', validators=[FileAllowed(ALLOWED_EXTENSIONS, 'Images only!'),check_image_size])
     # HiddenField is used to store the name of the image file
     img = HiddenField("Img") 
     submit = SubmitField('Save profile')    
@@ -36,6 +46,8 @@ class ProfileForm(FlaskForm):
         new = field.data
         if current_user.username != new and User.query.filter_by(username=new).first():
             raise ValidationError('Username already in use.')
+
+    
 
 class ProfileFormAdmin(FlaskForm):
     id = HiddenField('Id')
