@@ -57,7 +57,7 @@ def img(filename = None):
 @login_required
 def edit_profile():
     user = User.query.get_or_404(current_user.id)
-    form = ProfileForm(obj=user)
+    form = ProfileForm(obj=user, max_file_size=current_app.config.get('MAX_FILE_SIZE', 1 * 1024 * 1024))
     app = current_app._get_current_object()
     KUVAPOLKU = app.config['KUVAPOLKU']
     kuvanimi = ''

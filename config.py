@@ -20,7 +20,9 @@ class Config:
     WTF_CSRF_ENABLED = True
     UPLOAD_FOLDER = 'profiilikuvat/'
     ALLOWED_EXTENSIONS = ['png','jpg','jpeg','gif']
-    MAX_CONTENT_LENGTH = 2 * 1024 * 1024
+    # Huom. MAX_CONTENT_LENGTH aiheuttaa HTTP-virheen Error 413 Request Entity Too Large
+    # MAX_CONTENT_LENGTH = 2 * 1024 * 1024
+    MAX_FILE_SIZE = 2 * 1024 * 1024
     KUVAPOLKU = os.path.join(os.path.abspath('.'),UPLOAD_FOLDER)
     print("KUVAPOLKU: "+KUVAPOLKU)
 
