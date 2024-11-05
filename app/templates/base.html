@@ -7,15 +7,18 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
 <link href="{{ url_for('static', filename='site.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='pagination.css') }}" rel="stylesheet">
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="shortcut icon" href="{{ url_for('static', filename='omniamusta_eitaustaa.png') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='omniamusta_eitaustaa.png') }}" type="image/x-icon">
 
 {% endblock %}
 
 {% block navbar %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Flask-sovellus</a>
+      <a class="navbar-brand" href="#">
+        <img src="{{ url_for('static', filename='omniamusta_eitaustaa.png') }}" alt="Logo" style="height: 30px;">
+        Flask-sovellus
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>

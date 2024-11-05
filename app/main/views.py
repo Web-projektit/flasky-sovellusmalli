@@ -1,18 +1,18 @@
 from flask import render_template,request,flash,redirect,url_for,jsonify,current_app,send_from_directory
 from flask_login import login_required,current_user
-from ..decorators import admin_required
+from ..decorators import admin_required,debuggeri
 from ..models import User
-from .forms import ProfileForm
+from .forms import ProfileForm,ProfileFormAdmin
 from app import db
 from . import main
 from sqlalchemy import text
 import os
 from werkzeug.utils import secure_filename
 
-
+@debuggeri
 def shorten(filename):
     name, extension = os.path.splitext(filename)
-    print("SHORTEN:"+name+" "+extension)
+    # print("SHORTEN:"+name+" "+extension)
     length = 64 - len(extension)
     return name[:length] + extension
 
@@ -59,11 +59,20 @@ def edit_profile():
     form = ProfileForm(obj=user)
     app = current_app._get_current_object()
     KUVAPOLKU = app.config['KUVAPOLKU']
+    kuvanimi = ''
+    # Huom. omat validointifunktiot ProfileForm-luokassa
+    # Huom. kuvan nimen tallennus tietokantaan perustuu img-kenttään,
+    # kuvatiedoston tallennus palvelimelle files-kenttään. Img-kenttä
+    # tarvitaan, 1) jotta muuttamaton kuva säilyy, sillä sitä ei
+    # tule valituksi files-kenttään lomakkeelta ja 2) kuvan poistaminen
+    # ilmenee tyhjästä img-kentästä.
     if form.validate_on_submit():
         # check if the post request has the file part
-        if 'img' in request.files:
-            file = request.files['img']
+        print("FILES:"+str(request.files))
+        if 'file' in request.files and request.files['file'].filename != '':
+            file = request.files['file']
             kuvanimi = file.filename
+            print("file.filename:"+kuvanimi)
             if current_user.img and kuvanimi != current_user.img:
                 poista_vanha_kuva(current_user.id,current_user.img)
             if kuvanimi and allowed_file(kuvanimi):
@@ -73,37 +82,58 @@ def edit_profile():
                 filename = tee_kuvanimi(current_user.id,kuvanimi)
                 file.save(os.path.join(KUVAPOLKU, filename))
         form.populate_obj(user)
-        user.img = kuvanimi
+        print("KUVANIMI:"+kuvanimi)
+        # Huom. Alkuperäinen kuvan nimi on lyhentämätön ja se tallenetaan
+        # lyhennettynä tietokantaan ilman id-tunnistetta, kuvatiedosto
+        # tallennetaan id-tunnisteella, jotta se on yksilöllinen.
+        print("IMG:"+user.img)
+        user.img = kuvanimi if kuvanimi else user.img
         # db.session.add(current_user._get_current_object())
-        db.session.commit()
-        flash('Your profile has been updated.')
-        return redirect(url_for('.user', username=user.username))
-    if user.img:
-        kuva = tee_kuvanimi(user.id,user.img) 
-        # kuva = os.path.join(KUVAPOLKU, kuva)
-    else:
-        kuva = ''    
-    return render_template('edit_profile.html', form=form,kuva=kuva)
+        try:
+            db.session.commit()
+            flash('Your profile has been updated.', 'success')
+            return redirect(url_for('.user', username=user.username))
+        except Exception as e:
+            db.session.rollback()
+            flash('Virhe tallennuksessa.', 'danger')
+            app.logger.info(e)
+            kuva = tee_kuvanimi(user.id, kuvanimi) if kuvanimi else ''
+            return render_template('edit_profile.html', form=form,kuva=kuva)
+    kuva = tee_kuvanimi(user.id,user.img) if user.img else ''  
+    print("kuva:"+kuva) 
+    return render_template('edit_profile.html', form=form,kuva=kuva,API_KEY=app.config.get('GOOGLE_API_KEY'))
 
-
-
-    if form.validate_on_submit():
-        form.populate_obj(user)
-        db.session.commit()
-        flash('Your profile has been updated.', 'success')
-        return redirect(url_for('.user', username=current_user.username))
-    return render_template('edit_profile.html', form=form)
 
 @main.route('/edit_profile_admin', methods=['GET', 'POST']) 
 @login_required
 @admin_required
 def edit_profile_admin():
-    return "rakenteilla"
+    app = current_app._get_current_object()
+    user = User.query.get_or_404(request.args.get('id'))
+    # Tulosta MySQL-kyselyn arvot
+    for key, value in vars(user).items():
+        print(f'{key}: {value}')   
+    kuva = tee_kuvanimi(user.id,user.img) if user.img else ''
+    form = ProfileFormAdmin(obj=user)
+    print("FORM:"+str(form))
+    if form.validate_on_submit():
+        form.populate_obj(user)
+        try: 
+            db.session.commit()
+            flash('Käyttäjän tiedot on päivitetty.', 'success')
+            return redirect(url_for('.users'))
+        except Exception as e:
+            db.session.rollback()
+            flash('Virhe tallennuksessa.', 'danger')
+            current_app.logger.info(e)
+            return render_template('edit_profile_admin.html', form=form,user=user,kuva=kuva,API_KEY=app.config.get('GOOGLE_API_KEY'))
+    return render_template('edit_profile_admin.html', form=form,user=user,kuva=kuva,API_KEY=app.config.get('GOOGLE_API_KEY'))
     
 @main.route('/user', methods=['GET'])
 @login_required
 def user(): 
-    return render_template('user.html',user=current_user,kuva=False)   
+    kuva = tee_kuvanimi(current_user.id,current_user.img) if current_user.img else ''
+    return render_template('user.html',user=current_user,kuva=kuva,API_KEY=current_app.config.get('GOOGLE_API_KEY'))   
 
 @main.route('/users', methods=['GET', 'POST'])
 @login_required
@@ -157,7 +187,3 @@ def poista():
         return jsonify(virhe="käyttäjää ei löydy.")
 
 
-
-
-
-    return render_template('users.html')

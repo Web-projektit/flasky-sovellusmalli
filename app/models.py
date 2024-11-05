@@ -3,8 +3,7 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from . import db, login_manager
-import datetime
-from datetime import timezone
+from datetime import datetime,timezone
 
 class Permission:
     FOLLOW = 1
@@ -164,6 +163,11 @@ class User(UserMixin, db.Model):
 
     def is_administrator(self):
         return self.can(Permission.ADMIN)
+
+    def ping(self):
+        self.last_seen = datetime.now()
+        db.session.add(self)
+        db.session.commit()
 
     def __repr__(self):
         return f'<User {self.username}, email {self.email}>'
