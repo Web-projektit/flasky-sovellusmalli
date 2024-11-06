@@ -7,6 +7,12 @@ from app.models import User, Role
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
 # db.create_all()
+with app.app_context():
+    query = db.session.query(Role).first()
+    print("query: "+str(query))
+    if not query:
+        Role.insert_roles()
+        print("Roles inserted")
 
 @app.shell_context_processor
 def make_shell_context():

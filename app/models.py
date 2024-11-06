@@ -11,6 +11,7 @@ class Permission:
     WRITE = 4
     MODERATE = 8
     ADMIN = 16
+    
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
@@ -74,7 +75,7 @@ class User(UserMixin, db.Model):
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
     # Huom. Oletuarvon migraatiota ei ole vielä testattu
-    member_since = db.Column(db.DateTime(), default=timezone.utc, server_default=db.func.now())
+    member_since = db.Column(db.DateTime(), server_default=db.func.now())
     last_seen = db.Column(db.DateTime())
     img = db.Column(db.String(64))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
