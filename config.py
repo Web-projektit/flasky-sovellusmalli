@@ -36,6 +36,11 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
+        'sqlite://'
+
 class XamppConfig(Config):
     DEBUG = True
     DB_USERNAME= os.environ.get('DB_USERNAME') or 'root'
@@ -46,22 +51,13 @@ class XamppConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://'+DB_USERNAME+':'+DB_PASSWORD+'@'+DB_HOST+':'+DB_PORT+'/'+DB_NAME
     print("SQLALCHEMY_DATABASE_URI: "+SQLALCHEMY_DATABASE_URI)
 
-class TestingConfig(Config):
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
-        'sqlite://'
-
-
-class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-
+class ProductionConfig(XamppConfig):
+    DEBUG = False
 
 config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
     'production': ProductionConfig,
     'xampp': XamppConfig,
-
-    'default': DevelopmentConfig
+    'default': XamppConfig
 }
