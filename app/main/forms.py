@@ -9,8 +9,8 @@ from flask import request
 from werkzeug.datastructures import FileStorage
 
 
-def check_image_size(form, field, max_file_size=1024 * 1024):  # 1 MB oletusarvo
-    file: FileStorage = field.data
+def check_image_size(form, field, max_file_size = 1024 * 1024):  # 1 MB oletusarvo
+    file: FileStorage = field.data 
     if file:
         # Method 1: Using content_length if available
         file_size = file.content_length
@@ -43,7 +43,7 @@ class ProfileForm(FlaskForm):
     img = HiddenField("Img") 
     submit = SubmitField('Save profile')    
 
-    def __init__(self, *args, max_file_size=None, **kwargs):    
+    def __init__(self, *args, max_file_size = None, **kwargs):    
         super().__init__(*args, **kwargs)
         # Lisää tiedostokoon tarkistus, jos max_file_size annetaan
         if max_file_size:
