@@ -202,6 +202,8 @@ def faker():
 @login_required
 @admin_required
 def testi():
+    sys.stdout.write("Tämä on testireitti loggerin testaamiseen (stdout).\n")
+    sys.stderr.write("Tämä on testireitti loggerin testaamiseen (stderr).\n")
     current_app.logger.info("INFO: Käyttäjä vieraili kotisivulla (stdout).")
     current_app.logger.debug("DEBUG: Tämä on debug-viesti (stdout).")
     current_app.logger.error("ERROR: Tämä on virheviesti (stderr).")
