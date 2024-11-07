@@ -10,12 +10,16 @@ from flask_wtf import CSRFProtect
 import logging
 import sys
 from datetime import datetime
+from config import get_datetime
 import pytz
+
 
 class FinnishFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
-        record.created = datetime.fromtimestamp(record.created, pytz.timezone('Europe/Helsinki'))
-        return super().formatTime(record, datefmt)
+        # record.created = datetime.fromtimestamp(record.created, pytz.timezone('Europe/Helsinki'))
+        record.created = get_datetime(format=datefmt)
+        # return super().formatTime(record, datefmt)
+        return record.created
 
 csrf = CSRFProtect()
 bootstrap = Bootstrap()

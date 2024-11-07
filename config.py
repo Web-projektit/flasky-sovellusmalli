@@ -5,9 +5,9 @@ import pytz
 basedir = os.path.abspath(os.path.dirname(__file__))
 helsinki_tz = pytz.timezone('Europe/Helsinki')
 
-def get_datetime(tz = helsinki_tz, format = '%Y-%m-%d %H:%M:%S'):
+def get_datetime(tz=helsinki_tz, format='%Y-%m-%d %H:%M:%S'):
     current_time = datetime.now(tz).strftime(format)
-    print("current_time: "+current_time)
+    print("current_time: " + current_time)
     return current_time
 
 class Config:
