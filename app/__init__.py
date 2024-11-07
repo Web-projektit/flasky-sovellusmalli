@@ -9,6 +9,13 @@ from config import config
 from flask_wtf import CSRFProtect
 import logging
 import sys
+from datetime import datetime
+import pytz
+
+class FinnishFormatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        record.created = datetime.fromtimestamp(record.created, pytz.timezone('Europe/Helsinki'))
+        return super().formatTime(record, datefmt)
 
 csrf = CSRFProtect()
 bootstrap = Bootstrap()
@@ -19,29 +26,22 @@ db = SQLAlchemy(session_options={"autoflush": False})
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 
-import logging
-import sys
-from flask import Flask
-
-# Luo Flask-sovellus
-app = Flask(__name__)
-
 # Luo logger ja aseta tason kattavuus
 logger = logging.getLogger('flask_app')
 logger.setLevel(logging.DEBUG)
 # Luo handlerit eri lokitustasoille
 # stdout handler INFO- ja DEBUG-tasoisille viesteille
-stdout_handler = logging.StreamHandler(sys.stdout)
-stdout_handler.setLevel(logging.INFO)
+# stdout_handler = logging.StreamHandler(sys.stdout)
+# stdout_handler.setLevel(logging.INFO)
 # stderr handler ERROR- ja CRITICAL-tasoisille viesteille
 stderr_handler = logging.StreamHandler(sys.stderr)
-stderr_handler.setLevel(logging.ERROR)
+stderr_handler.setLevel(logging.DEBUG)
 # Määritä formatteri, joka lisätään kaikkiin handlereihin
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-stdout_handler.setFormatter(formatter)
+formatter = FinnishFormatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# stdout_handler.setFormatter(formatter)
 stderr_handler.setFormatter(formatter)
 # Lisää handlerit loggeriin
-logger.addHandler(stdout_handler)
+# logger.addHandler(stdout_handler)
 logger.addHandler(stderr_handler)
 # Estä duplikaattien syntyminen
 logger.propagate = False

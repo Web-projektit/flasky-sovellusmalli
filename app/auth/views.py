@@ -202,13 +202,13 @@ def faker():
 @login_required
 @admin_required
 def testi():
-    sys.stdout.write("Tämä on testireitti loggerin testaamiseen (stdout).\n")
+    # sys.stdout.write("Tämä on testireitti loggerin testaamiseen (stdout).\n")
     sys.stderr.write("Tämä on testireitti loggerin testaamiseen (stderr).\n")
-    current_app.logger.info("INFO: Käyttäjä vieraili kotisivulla (stdout).")
-    current_app.logger.debug("DEBUG: Tämä on debug-viesti (stdout).")
-    current_app.logger.error("ERROR: Tämä on virheviesti (stderr).")
-    current_app.logger.warning("WARNING: Tämä on varoitusviesti (stderr).")
-    current_app.logger.critical("CRITICAL: Tämä on kriittinen virheviesti (stderr).")
+    current_app.logger.debug("DEBUG: Tämä on debug-viesti.")
+    current_app.logger.info("INFO: Käyttäjä vieraili kotisivulla.")
+    current_app.logger.warning("WARNING: Tämä on varoitusviesti.")
+    current_app.logger.error("ERROR: Tämä on virheviesti.")
+    current_app.logger.critical("CRITICAL: Tämä on kriittinen virheviesti.")
     return "Tervetuloa testisivulle!"
 
 

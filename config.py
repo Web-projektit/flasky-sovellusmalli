@@ -1,6 +1,14 @@
 import os
-basedir = os.path.abspath(os.path.dirname(__file__))
+from datetime import datetime
+import pytz
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+helsinki_tz = pytz.timezone('Europe/Helsinki')
+
+def get_datetime(tz = helsinki_tz, format = '%Y-%m-%d %H:%M:%S'):
+    current_time = datetime.now(tz).strftime(format)
+    print("current_time: "+current_time)
+    return current_time
 
 class Config:
     GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
@@ -25,6 +33,7 @@ class Config:
     MAX_FILE_SIZE = 2 * 1024 * 1024
     KUVAPOLKU = os.path.join(os.path.abspath('.'),UPLOAD_FOLDER)
     print("KUVAPOLKU: "+KUVAPOLKU)
+    GET_TIME = get_datetime
 
     @staticmethod
     def init_app(app):
