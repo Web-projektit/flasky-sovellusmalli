@@ -5,20 +5,17 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import OperationalError
 from flask_login import LoginManager
-from config import config
+from config import config, get_datetime
 from flask_wtf import CSRFProtect
 import logging
 import sys
 from datetime import datetime
-from config import get_datetime
 import pytz
-
 
 class FinnishFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
-        # record.created = datetime.fromtimestamp(record.created, pytz.timezone('Europe/Helsinki'))
-        record.created = get_datetime(format=datefmt)
-        # return super().formatTime(record, datefmt)
+        helsinki_tz = pytz.timezone('Europe/Helsinki')
+        record.created = datetime.now(helsinki_tz).strftime(datefmt or '%Y-%m-%d %H:%M:%S')
         return record.created
 
 csrf = CSRFProtect()
@@ -41,7 +38,7 @@ logger.setLevel(logging.DEBUG)
 stderr_handler = logging.StreamHandler(sys.stderr)
 stderr_handler.setLevel(logging.DEBUG)
 # Määritä formatteri, joka lisätään kaikkiin handlereihin
-formatter = FinnishFormatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = FinnishFormatter('%Y-%m-%d %H:%M:%S - %(name)s - %(levelname)s - %(message)s')
 # stdout_handler.setFormatter(formatter)
 stderr_handler.setFormatter(formatter)
 # Lisää handlerit loggeriin
