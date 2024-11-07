@@ -19,20 +19,32 @@ db = SQLAlchemy(session_options={"autoflush": False})
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 
-# Luo loggeri
+import logging
+import sys
+from flask import Flask
+
+# Luo Flask-sovellus
+app = Flask(__name__)
+
+# Luo logger ja aseta tason kattavuus
 logger = logging.getLogger('flask_app')
 logger.setLevel(logging.DEBUG)
-# Luo stdout handler
+# Luo handlerit eri lokitustasoille
+# stdout handler INFO- ja DEBUG-tasoisille viesteille
 stdout_handler = logging.StreamHandler(sys.stdout)
-stdout_handler.setLevel(logging.DEBUG)
-# Lisää formatteri handleriin
+stdout_handler.setLevel(logging.INFO)
+# stderr handler ERROR- ja CRITICAL-tasoisille viesteille
+stderr_handler = logging.StreamHandler(sys.stderr)
+stderr_handler.setLevel(logging.ERROR)
+# Määritä formatteri, joka lisätään kaikkiin handlereihin
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 stdout_handler.setFormatter(formatter)
-# Lisää handler loggeriin
+stderr_handler.setFormatter(formatter)
+# Lisää handlerit loggeriin
 logger.addHandler(stdout_handler)
-# Varmista, ettei duplikaatteja tule (jos loggeria kutsutaan uudelleen)
+logger.addHandler(stderr_handler)
+# Estä duplikaattien syntyminen
 logger.propagate = False
-
 
 def create_app(config_name):
     app = Flask(__name__)

@@ -197,5 +197,20 @@ def faker():
         flash("Virhe: Useita samoja käyttäjätunnuksia","danger")
     return render_template('auth/fake.html', fake_users=f_users)
 
-      
+ # Esimerkki loggauksen käytöstä Flask-reitillä
+@auth.route('/testi')
+@login_required
+@admin_required
+def testi():
+    current_app.logger.info("INFO: Käyttäjä vieraili kotisivulla (stdout).")
+    current_app.logger.debug("DEBUG: Tämä on debug-viesti (stdout).")
+    current_app.logger.error("ERROR: Tämä on virheviesti (stderr).")
+    current_app.logger.warning("WARNING: Tämä on varoitusviesti (stderr).")
+    current_app.logger.critical("CRITICAL: Tämä on kriittinen virheviesti (stderr).")
+    return "Tervetuloa testisivulle!"
+
+
+
+ 
+     
   
