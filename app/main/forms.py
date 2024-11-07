@@ -11,6 +11,7 @@ from werkzeug.datastructures import FileStorage
 
 def check_image_size(form, field, max_file_size = 1024 * 1024):  # 1 MB oletusarvo
     file: FileStorage = field.data 
+    file_size = 0
     if file:
         # Method 1: Using content_length if available
         file_size = file.content_length

@@ -7,6 +7,8 @@ from sqlalchemy.exc import OperationalError
 from flask_login import LoginManager
 from config import config
 from flask_wtf import CSRFProtect
+import logging
+
 
 
 csrf = CSRFProtect()
@@ -17,6 +19,11 @@ moment = Moment()
 db = SQLAlchemy(session_options={"autoflush": False})
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
+
+logging.getLogger('flask_cors').level = logging.DEBUG
+# Tulostukset Azuren virhekonsoliin via stderr
+logger = logging.getLogger('flask_app')
+logger.setLevel(logging.DEBUG)
 
 def create_app(config_name):
     app = Flask(__name__)

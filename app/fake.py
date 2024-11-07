@@ -32,7 +32,7 @@ def users(count=100):
         
         db.session.add(u)
         fake_users.append(u)
-        print("fake_user: "+str(u))
+        # print("fake_user: "+str(u))
         app.logger.info(f"fake_user: {u}")  
         i += 1
 
