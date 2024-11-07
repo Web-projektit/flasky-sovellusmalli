@@ -1,3 +1,4 @@
+import sys
 from flask import render_template, redirect, current_app, request, url_for, flash, jsonify
 from flask_login import login_user, logout_user, login_required, \
     current_user
@@ -179,9 +180,22 @@ def change_email(token):
 @login_required
 @admin_required
 def faker():
+    msg = "Käyttäjien luominen, logger"
+    current_app.logger.info(msg)
+    msg = "Käyttäjien luominen, stderr"
+    sys.stderr.write(msg + '\n')
     f_users = fake_users(25)
+    if not f_users:
+        msg = "Virhe: käyttäjiä ei luotu"
+        current_app.logger.error(msg)
+    else:
+        msg = "Käyttäjät luotu"
+        current_app.logger.info(msg)
     # f_users = User.query.all()
     # print(str(f_users))
+
+
+
     if not f_users:
         flash("Virhe: Useita samoja käyttäjätunnuksia","danger")
     return render_template('auth/fake.html', fake_users=f_users)
