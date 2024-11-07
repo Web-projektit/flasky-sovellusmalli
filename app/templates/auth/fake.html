@@ -12,8 +12,9 @@
 {% for user in fake_users %}
     <div class="card mb-4">
         <div class="card-body">
-            <h5 class="card-title">{{ user.username }}</h5>
-            <p class="card-text">{{ user.email }}</p>
+            <h5 style="margin:0;" class="card-title">{{ user.name }}</h5>
+            <p style="margin:0;" class="card-text">{{ user.username }}</p>
+            <p style="margin:0;" class="card-text">{{ user.email }}</p>
         </div>
     </div>
 {% endfor %}
