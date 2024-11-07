@@ -3,7 +3,7 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from . import db, login_manager
-from datetime import datetime,timezone
+from datetime import datetime
 
 class Permission:
     FOLLOW = 1
@@ -75,7 +75,9 @@ class User(UserMixin, db.Model):
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
     # Huom. Oletuarvon migraatiota ei ole vielä testattu
-    member_since = db.Column(db.DateTime(), server_default=db.func.now())
+    # lambda: current_app.config['TIMEZONE_FUNCTION']())
+    # member_since = db.Column(db.DateTime(), server_default=db.func.now())
+    member_since = db.Column(db.DateTime(), default=lambda: current_app.config['GET_TIME']())
     last_seen = db.Column(db.DateTime())
     img = db.Column(db.String(64))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
@@ -166,7 +168,8 @@ class User(UserMixin, db.Model):
         return self.can(Permission.ADMIN)
 
     def ping(self):
-        self.last_seen = datetime.now()
+        # self.last_seen = datetime.now()
+        self.last_seen = current_app.config['GET_TIME']()
         db.session.add(self)
         db.session.commit()
 
