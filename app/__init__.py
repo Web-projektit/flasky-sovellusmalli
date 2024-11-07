@@ -8,8 +8,7 @@ from flask_login import LoginManager
 from config import config
 from flask_wtf import CSRFProtect
 import logging
-
-
+import sys
 
 csrf = CSRFProtect()
 bootstrap = Bootstrap()
@@ -20,10 +19,20 @@ db = SQLAlchemy(session_options={"autoflush": False})
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 
-logging.getLogger('flask_cors').level = logging.DEBUG
-# Tulostukset Azuren virhekonsoliin via stderr
+# Luo loggeri
 logger = logging.getLogger('flask_app')
 logger.setLevel(logging.DEBUG)
+# Luo stdout handler
+stdout_handler = logging.StreamHandler(sys.stdout)
+stdout_handler.setLevel(logging.DEBUG)
+# Lisää formatteri handleriin
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+stdout_handler.setFormatter(formatter)
+# Lisää handler loggeriin
+logger.addHandler(stdout_handler)
+# Varmista, ettei duplikaatteja tule (jos loggeria kutsutaan uudelleen)
+logger.propagate = False
+
 
 def create_app(config_name):
     app = Flask(__name__)

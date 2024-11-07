@@ -193,9 +193,6 @@ def faker():
         current_app.logger.info(msg)
     # f_users = User.query.all()
     # print(str(f_users))
-
-
-
     if not f_users:
         flash("Virhe: Useita samoja käyttäjätunnuksia","danger")
     return render_template('auth/fake.html', fake_users=f_users)
