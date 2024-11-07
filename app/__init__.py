@@ -15,8 +15,8 @@ import pytz
 class FinnishFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
         helsinki_tz = pytz.timezone('Europe/Helsinki')
-        record.created = datetime.now(helsinki_tz).strftime(datefmt or '%Y-%m-%d %H:%M:%S')
-        return record.created
+        created_time = datetime.fromtimestamp(record.created, helsinki_tz)
+        return created_time.strftime(datefmt or '%Y-%m-%d %H:%M:%S')
 
 csrf = CSRFProtect()
 bootstrap = Bootstrap()
