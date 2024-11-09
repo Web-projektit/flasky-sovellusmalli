@@ -50,7 +50,7 @@ def img(filename = None):
     app = current_app._get_current_object()
     KUVAPOLKU = app.config['KUVAPOLKU']
     if filename is None:
-        filename = 'default_profile.png'
+        return send_from_directory('static','default_profile.png')
     return send_from_directory(KUVAPOLKU, filename)
 
 @main.route('/edit_profile', methods=['GET', 'POST'])  

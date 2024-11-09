@@ -37,8 +37,13 @@ class Config:
 
     @staticmethod
     def init_app(app):
-        pass
-
+        kuvapolku = app.config['KUVAPOLKU']
+        if not os.path.exists(kuvapolku):
+            try:
+                os.makedirs(kuvapolku)
+            except PermissionError as e:
+                errmsg = f'Permission denied ({e}): Unable to create directory {kuvapolku}.'
+                app.logger.exception(errmsg)
 
 class DevelopmentConfig(Config):
     DEBUG = True
@@ -62,6 +67,8 @@ class XamppConfig(Config):
 
 class ProductionConfig(XamppConfig):
     DEBUG = False
+    DIR = '/home'
+    KUVAPOLKU = os.path.join(DIR, Config.UPLOAD_FOLDER)
 
 config = {
     'development': DevelopmentConfig,
