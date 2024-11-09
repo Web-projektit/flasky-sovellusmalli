@@ -15,7 +15,8 @@ import pytz
 class FinnishFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
         helsinki_tz = pytz.timezone('Europe/Helsinki')
-        created_time = datetime.fromtimestamp(record.created, helsinki_tz)
+        created_time = datetime.fromtimestamp(record.created, tz=helsinki_tz)
+        # sys.stderr.write("created_time: "+str(created_time))
         return created_time.strftime(datefmt or '%Y-%m-%d %H:%M:%S')
 
 csrf = CSRFProtect()
@@ -27,25 +28,23 @@ db = SQLAlchemy(session_options={"autoflush": False})
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 
-# Luo logger ja aseta tason kattavuus
+# Luo logger flask_app-nimisenä ja aseta tason kattavuus
 logger = logging.getLogger('flask_app')
 logger.setLevel(logging.DEBUG)
-# Luo handlerit eri lokitustasoille
-# stdout handler INFO- ja DEBUG-tasoisille viesteille
 # stdout_handler = logging.StreamHandler(sys.stdout)
 # stdout_handler.setLevel(logging.INFO)
-# stderr handler ERROR- ja CRITICAL-tasoisille viesteille
 stderr_handler = logging.StreamHandler(sys.stderr)
 stderr_handler.setLevel(logging.DEBUG)
-# Määritä formatteri, joka lisätään kaikkiin handlereihin
-formatter = FinnishFormatter('%Y-%m-%d %H:%M:%S - %(name)s - %(levelname)s - %(message)s')
+# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = FinnishFormatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 # stdout_handler.setFormatter(formatter)
 stderr_handler.setFormatter(formatter)
-# Lisää handlerit loggeriin
 # logger.addHandler(stdout_handler)
 logger.addHandler(stderr_handler)
 # Estä duplikaattien syntyminen
 logger.propagate = False
+# Log a test message
+logger.info("Test log message with Helsinki time.")
 
 def create_app(config_name):
     app = Flask(__name__)
