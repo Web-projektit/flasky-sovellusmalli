@@ -204,11 +204,11 @@ def faker():
 def testi():
     # sys.stdout.write("Tämä on testireitti loggerin testaamiseen (stdout).\n")
     sys.stderr.write("Tämä on testireitti loggerin testaamiseen (stderr).\n")
-    current_app.logger.debug("DEBUG: Tämä on debug-viesti.")
-    current_app.logger.info("INFO: Käyttäjä vieraili kotisivulla.")
-    current_app.logger.warning("WARNING: Tämä on varoitusviesti.")
-    current_app.logger.error("ERROR: Tämä on virheviesti.")
-    current_app.logger.critical("CRITICAL: Tämä on kriittinen virheviesti.")
+    current_app.logger.debug("Tämä on debug-viesti.")
+    current_app.logger.info("Käyttäjä vieraili kotisivulla.")
+    current_app.logger.warning("Tämä on varoitusviesti.")
+    current_app.logger.error("Tämä on virheviesti.")
+    current_app.logger.critical("Tämä on kriittinen virheviesti.")
     return "Tervetuloa testisivulle!"
 
 
