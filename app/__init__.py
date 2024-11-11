@@ -1,3 +1,5 @@
+# Initialization and configuration of the Flask application
+
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
@@ -14,7 +16,7 @@ import pytz
 
 class FinnishFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
-        helsinki_tz = pytz.timezone('Europe/Berlin')
+        helsinki_tz = pytz.timezone('Europe/Helsinki')
         created_time = datetime.fromtimestamp(record.created, tz=helsinki_tz)
         # sys.stderr.write("created_time: "+str(created_time))
         return created_time.strftime(datefmt or '%Y-%m-%d %H:%M:%S')
@@ -24,33 +26,17 @@ bootstrap = Bootstrap()
 mail = Mail()
 moment = Moment()
 # db = SQLAlchemy()
+# with db.session.no_autoflush:, ei toimi, 
+# joten se on korvattu alustuksella db = SQLAlchemy(session_options={"autoflush": False})    
+# ks. fake.py 
 db = SQLAlchemy(session_options={"autoflush": False})
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 
-# Luo logger flask_app-nimisenä ja aseta tason kattavuus
-# logger = logging.getLogger('flask_app')
-# logger.setLevel(logging.DEBUG)
-# stdout_handler = logging.StreamHandler(sys.stdout)
-# stdout_handler.setLevel(logging.INFO)
-# stderr_handler = logging.StreamHandler(sys.stderr)
-# stderr_handler.setLevel(logging.DEBUG)
-# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-# formatter = FinnishFormatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-# stdout_handler.setFormatter(formatter)
-# stderr_handler.setFormatter(formatter)
-# logger.addHandler(stdout_handler)
-# logger.addHandler(stderr_handler)
-# Estä duplikaattien syntyminen
-# logger.propagate = False
-# Log a test message
-# logger.info("Test log message with Helsinki time.")
-
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
-    config[config_name].init_app(app)
-
+     
     # Configure the logger
     logger = app.logger  # Use Flask's built-in app logger
     # Remove any existing handlers
@@ -62,9 +48,9 @@ def create_app(config_name):
     stderr_handler.setFormatter(formatter)
     logger.addHandler(stderr_handler)
     logger.propagate = False
-
     logger.info("Test log message with Helsinki time.")
-
+    
+    config[config_name].init_app(app)  # Call init_app after logger configuration
     bootstrap.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
