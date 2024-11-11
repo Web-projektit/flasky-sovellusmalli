@@ -209,6 +209,7 @@ def testi():
     current_app.logger.warning("Tämä on varoitusviesti.")
     current_app.logger.error("Tämä on virheviesti.")
     current_app.logger.critical("Tämä on kriittinen virheviesti.")
+    current_app.logger.exception("Tämä on exception-virheviesti.")
     return "Tervetuloa testisivulle!"
 
 

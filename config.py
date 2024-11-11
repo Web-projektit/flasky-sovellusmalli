@@ -1,3 +1,5 @@
+# Configuration settings for the Flask application
+
 import os
 from datetime import datetime
 import pytz
@@ -37,6 +39,7 @@ class Config:
 
     @staticmethod
     def init_app(app):
+        
         kuvapolku = app.config['KUVAPOLKU']
         if not os.path.exists(kuvapolku):
             try:
