@@ -17,6 +17,8 @@ class Config:
     GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
     BABEL_DEFAULT_LOCALE = 'fi'
     BABEL_SUPPORTED_LOCALES = ['fi', 'en']
+    BABEL_TRANSLATION_DIRECTORIES = '../translations'
+
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'Vaikeasti arvattavissa oleva salasana'
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.googlemail.com')
     MAIL_PORT = int(os.environ.get('MAIL_PORT', '587'))

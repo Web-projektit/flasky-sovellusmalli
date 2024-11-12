@@ -13,9 +13,7 @@ import sys
 from datetime import datetime
 import pytz
 from flask_babel import Babel
-import gettext
-from gettext import gettext as _
-# from flask_babel import _
+from flask_babel import _
 
 class FinnishFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
@@ -70,20 +68,7 @@ def create_app(config_name):
         return None
 
     csrf.init_app(app)
-    login_manager.init_app(app)
-
-    @app.before_request
-    def set_language():
-        # Hae kieliasetukset pyynnön parametreista tai selaimen kieliasetuksista
-        selected_language = request.args.get('lang') or request.accept_languages.best_match(['en', 'fi'])
-        # Tallenna kieli sovelluksen kontekstiin
-        g.language = selected_language
-        # Lataa gettext-käännös ja asenna se tilapäisesti
-        translations = gettext.translation('messages', localedir='translations', languages=[selected_language], fallback=True)
-        translations.install()
-        # Tee `_`-funktio käännöksiin käytettäväksi kaikissa näkymissä ja mallipohjissa
-        app.jinja_env.globals['_'] = translations.gettext
- 
+    login_manager.init_app(app) 
     babel.init_app(app, locale_selector=get_locale)
     print("INIT HELLO: "+ _("Hello"))
  
