@@ -1,5 +1,5 @@
 import sys
-from flask import render_template, redirect, current_app, request, url_for, flash, jsonify
+from flask import render_template, redirect, current_app, request, url_for, flash, jsonify, g
 from flask_login import login_user, logout_user, login_required, \
     current_user
 from . import auth
@@ -10,11 +10,12 @@ from ..models import User
 from ..email import send_email
 from .forms import LoginForm, RegistrationForm, ChangePasswordForm,\
     PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
-
+from flask_babel import _, get_locale
 
 @auth.before_app_request
 def before_request():
     app = current_app._get_current_object()
+    g.babel_locale = get_locale()
     app.logger.debug('auth.before_request,endpoint %s', request.endpoint)
     app.logger.debug('auth.before_request,blueprint %s', request.blueprint)
     if current_user.is_authenticated:
@@ -47,7 +48,7 @@ def login():
                 next = url_for('main.index')
             return redirect(next)
         flash('Invalid email or password.')
-    return render_template('auth/login.html', form=form)
+    return render_template('auth/login.html', form=form, title=_('Login'))
 
 
 @auth.route('/logout')

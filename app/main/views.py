@@ -8,6 +8,8 @@ from . import main
 from sqlalchemy import text
 import os
 from werkzeug.utils import secure_filename
+# from flask_babel import _
+from gettext import gettext as _
 
 @debuggeri
 def shorten(filename):
@@ -17,7 +19,7 @@ def shorten(filename):
     return name[:length] + extension
 
 '''def allowed_file(filename):
-    app = current_app._get_current_object()
+    app.fi_translations.install()    app = current_app._get_current_object()
     ALLOWED_EXTENSIONS = app.config['ALLOWED_EXTENSIONS']
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -42,7 +44,8 @@ def poista_vanha_kuva(id,kuva):
 
 @main.route('/')
 def index():
-    return render_template('index.html')
+    print("INDEX " + _('Hello'))
+    return render_template('index.html',greeting=_('Hello'))
 
 @main.route('/img/')
 @main.route('/img/<path:filename>')

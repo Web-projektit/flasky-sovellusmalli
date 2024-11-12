@@ -1,5 +1,5 @@
 # Initialization and configuration of the Flask application
-from flask import Flask
+from flask import Flask,request,g
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_moment import Moment
@@ -12,6 +12,10 @@ import logging
 import sys
 from datetime import datetime
 import pytz
+from flask_babel import Babel
+import gettext
+from gettext import gettext as _
+# from flask_babel import _
 
 class FinnishFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
@@ -19,10 +23,17 @@ class FinnishFormatter(logging.Formatter):
         created_time = datetime.fromtimestamp(record.created, tz=helsinki_tz)
         return created_time.strftime(datefmt or '%Y-%m-%d %H:%M:%S')
 
+def get_locale():
+    # Valitse kieli pyynnön perusteella tai selaimen kieliasetuksista
+    selected_language = request.args.get('lang') or request.accept_languages.best_match(['fi', 'en'])
+    print(f"Selected language: {selected_language}")  # Lisää tämä rivin tarkistamiseksi
+    return selected_language
+
 csrf = CSRFProtect()
 bootstrap = Bootstrap()
 mail = Mail()
 moment = Moment()
+babel = Babel()
 # db = SQLAlchemy()
 # with db.session.no_autoflush:, ei toimi, 
 # joten se on korvattu alustuksella db = SQLAlchemy(session_options={"autoflush": False})    
@@ -34,7 +45,6 @@ login_manager.login_view = 'auth.login'
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
-     
     # Configure the logger
     logger = app.logger  # Use Flask's built-in app logger
     # Remove any existing handlers
@@ -60,14 +70,27 @@ def create_app(config_name):
         return None
 
     csrf.init_app(app)
-    
     login_manager.init_app(app)
-    # Set Moment.js locale to Finnish
+
+    @app.before_request
+    def set_language():
+        # Hae kieliasetukset pyynnön parametreista tai selaimen kieliasetuksista
+        selected_language = request.args.get('lang') or request.accept_languages.best_match(['en', 'fi'])
+        # Tallenna kieli sovelluksen kontekstiin
+        g.language = selected_language
+        # Lataa gettext-käännös ja asenna se tilapäisesti
+        translations = gettext.translation('messages', localedir='translations', languages=[selected_language], fallback=True)
+        translations.install()
+        # Tee `_`-funktio käännöksiin käytettäväksi kaikissa näkymissä ja mallipohjissa
+        app.jinja_env.globals['_'] = translations.gettext
+ 
+    babel.init_app(app, locale_selector=get_locale)
+    print("INIT HELLO: "+ _("Hello"))
+ 
+   # Set Moment.js locale to Finnish
     # @app.context_processor
     # def inject_moment_locale():
     #    return {'moment_locale': 'fi'}
-
-
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
@@ -75,3 +98,4 @@ def create_app(config_name):
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
     return app
+

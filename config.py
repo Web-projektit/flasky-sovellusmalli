@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 import pytz
 
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 helsinki_tz = pytz.timezone('Europe/Helsinki')
 
@@ -14,6 +15,8 @@ def get_datetime(tz=helsinki_tz, format='%Y-%m-%d %H:%M:%S'):
 
 class Config:
     GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+    BABEL_DEFAULT_LOCALE = 'fi'
+    BABEL_SUPPORTED_LOCALES = ['fi', 'en']
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'Vaikeasti arvattavissa oleva salasana'
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.googlemail.com')
     MAIL_PORT = int(os.environ.get('MAIL_PORT', '587'))
