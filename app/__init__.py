@@ -1,5 +1,4 @@
 # Initialization and configuration of the Flask application
-
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
@@ -18,7 +17,6 @@ class FinnishFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
         helsinki_tz = pytz.timezone('Europe/Helsinki')
         created_time = datetime.fromtimestamp(record.created, tz=helsinki_tz)
-        # sys.stderr.write("created_time: "+str(created_time))
         return created_time.strftime(datefmt or '%Y-%m-%d %H:%M:%S')
 
 csrf = CSRFProtect()
@@ -43,7 +41,6 @@ def create_app(config_name):
     logger.handlers.clear()
     logger.setLevel(logging.DEBUG)
     stderr_handler = logging.StreamHandler(sys.stderr)
-    stderr_handler.setLevel(logging.DEBUG)
     formatter = FinnishFormatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     stderr_handler.setFormatter(formatter)
     logger.addHandler(stderr_handler)
