@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-12 12:47+0200\n"
-"PO-Revision-Date: 2024-11-12 12:49+0200\n"
+"POT-Creation-Date: 2024-11-12 23:31+0200\n"
+"PO-Revision-Date: 2024-11-12 23:32+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
 "Language-Team: en <LL@li.org>\n"
@@ -18,11 +18,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: app/auth/views.py:50
+#: app/__init__.py:73 app/main/views.py:47 app/main/views.py:48
+#: app/templates/index.html:7 sovellusmalli.py:47 sovellusmalli.py:57
+msgid "Hello"
+msgstr "Hello"
+
+#: app/auth/views.py:51
 msgid "Login"
 msgstr "Login"
 
-#: app/main/views.py:46
-msgid "Hello"
-msgstr "Hi"
+#: app/templates/index.html:7
+msgid "Stranger"
+msgstr "Stranger"
 
