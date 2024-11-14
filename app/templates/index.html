@@ -4,7 +4,7 @@
 
 {% block page_content %}
 <div class="page-header">
-<h1>{{ _('Hello') }} {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}{{ _('Stranger') }}{% endif %}!</h1>
+<h1>{{ greeting }} {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}{{ _('Stranger') }}{% endif %}!</h1>
 </div>
 <p>Current language: {{ g.get('babel_locale', 'en') }}</p>
 {% endblock %}

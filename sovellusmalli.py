@@ -4,8 +4,9 @@ from flask_migrate import Migrate
 from app import create_app, db
 from app.models import User, Role
 import polib
-import gettext
+# import gettext
 # from gettext import gettext as _
+from flask_babel import _
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
@@ -42,12 +43,12 @@ def inject_translations():
     return dict(_=gettext.gettext)
 '''
 
-fi_translations = gettext.translation('messages', localedir='translations', languages=['fi'])
-fi_translations.install()
+# fi_translations = gettext.translation('messages', localedir='translations', languages=['fi'])
+# fi_translations.install()
 print("Python-käännös:"+ _("Hello"))
 
 
-mo_path = 'translations/en/LC_MESSAGES/messages.mo'
+mo_path = 'translations/fi/LC_MESSAGES/messages.mo'
 mo = polib.mofile(mo_path)
 
 # Tulosta kaikki käännökset

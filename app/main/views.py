@@ -8,8 +8,8 @@ from . import main
 from sqlalchemy import text
 import os
 from werkzeug.utils import secure_filename
-# from flask_babel import _
-from gettext import gettext as _
+from flask_babel import _
+# from gettext import gettext as _
 
 @debuggeri
 def shorten(filename):
