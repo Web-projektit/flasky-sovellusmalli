@@ -80,6 +80,18 @@ margin-right: 2rem;
 float: right; 
 }
 
+.language-links {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 10px;
+  margin-right: 2rem;
+} 
 
+.disabled-link {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+}
 
   

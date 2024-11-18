@@ -1,4 +1,6 @@
-from flask import render_template,request,flash,redirect,url_for,jsonify,current_app,send_from_directory
+from flask import render_template,request, \
+     flash,redirect,url_for,jsonify,current_app, \
+     send_from_directory, make_response
 from flask_login import login_required,current_user
 from ..decorators import admin_required,debuggeri
 from ..models import User
@@ -42,6 +44,17 @@ def poista_vanha_kuva(id,kuva):
     else:   
         return True
 
+@main.route('/set_language/<lang>')
+def set_language(lang = None):
+    app = current_app._get_current_object()
+    app.logger.info("SET_LANGUAGE:"+lang)      
+    if lang not in app.config['BABEL_SUPPORTED_LOCALES']:
+        lang = app.config['BABEL_DEFAULT_LOCALE']
+    # Aseta kieli evästeeseen ja ohjaa käyttäjä takaisin samalle sivulle
+    response = redirect(request.referrer or url_for('index'))
+    response.set_cookie('lang', lang)
+    return response
+ 
 @main.route('/')
 def index():
     print("INDEX " + _('Hello'))

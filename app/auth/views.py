@@ -10,12 +10,11 @@ from ..models import User
 from ..email import send_email
 from .forms import LoginForm, RegistrationForm, ChangePasswordForm,\
     PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
-from flask_babel import _, get_locale
+from flask_babel import _
 
 @auth.before_app_request
 def before_request():
     app = current_app._get_current_object()
-    g.babel_locale = get_locale()
     app.logger.debug('auth.before_request,endpoint %s', request.endpoint)
     app.logger.debug('auth.before_request,blueprint %s', request.blueprint)
     if current_user.is_authenticated:

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-12 23:31+0200\n"
+"POT-Creation-Date: 2024-11-14 16:17+0200\n"
 "PO-Revision-Date: 2024-11-12 23:32+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,16 +18,165 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: app/__init__.py:73 app/main/views.py:47 app/main/views.py:48
-#: app/templates/index.html:7 sovellusmalli.py:47 sovellusmalli.py:57
+#: app/__init__.py:74 app/main/views.py:60 app/main/views.py:61
+#: Flask Application Model.py:48 Flask Application Model.py:58
 msgid "Hello"
 msgstr "Hello"
 
-#: app/auth/views.py:51
+#: app/auth/forms.py:10 app/auth/forms.py:18 app/auth/forms.py:49
+msgid "Email"
+msgstr "Email"
+
+#: app/auth/forms.py:12 app/auth/forms.py:25 app/auth/forms.py:64
+msgid "Password"
+msgstr "Password"
+
+#: app/auth/forms.py:13
+msgid "Keep me logged in"
+msgstr "Keep me logged in"
+
+#: app/auth/forms.py:14
+msgid "Log In"
+msgstr "Log In"
+
+#: app/auth/forms.py:20
+msgid "Username"
+msgstr "Username"
+
+#: app/auth/forms.py:23
+msgid "Usernames must have only letters, numbers, dots or underscores"
+msgstr "Usernames must have only letters, numbers, dots or underscores"
+
+#: app/auth/forms.py:26 app/auth/forms.py:42
+msgid "Passwords must match."
+msgstr "Passwords must match."
+
+#: app/auth/forms.py:27 app/auth/forms.py:57
+msgid "Confirm password"
+msgstr "Confirm password"
+
+#: app/auth/forms.py:28
+msgid "Register"
+msgstr "Register"
+
+#: app/auth/forms.py:32 app/auth/forms.py:69
+msgid "Email already registered."
+msgstr "Email already registered."
+
+#: app/auth/forms.py:36
+msgid "Username already in use."
+msgstr "Username already in use."
+
+#: app/auth/forms.py:40
+msgid "Old password"
+msgstr "Old password"
+
+#: app/auth/forms.py:41
+msgid "New password"
+msgstr "New password"
+
+#: app/auth/forms.py:43
+msgid "Confirm new password"
+msgstr "Confirm new password"
+
+#: app/auth/forms.py:45
+msgid "Update Password"
+msgstr "Update Password"
+
+#: app/auth/forms.py:51 app/auth/forms.py:58
+msgid "Reset Password"
+msgstr "Reset Password"
+
+#: app/auth/forms.py:55
+msgid "New Password"
+msgstr "New Password"
+
+#: app/auth/forms.py:56
+msgid "Passwords must match"
+msgstr "Passwords must match"
+
+#: app/auth/forms.py:62
+msgid "New Email"
+msgstr "New Email"
+
+#: app/auth/forms.py:65
+msgid "Update Email Address"
+msgstr "Update Email Address"
+
+#: app/auth/views.py:50 app/templates/base.html:45
 msgid "Login"
 msgstr "Login"
+
+#: app/templates/base.html:3
+msgid "Flask Application Model"
+msgstr "Flask Application Model"
+
+#: app/templates/base.html:20
+msgid "Flask Application Model"
+msgstr ""
+
+#: app/templates/base.html:27
+msgid "Home"
+msgstr "Home"
+
+#: app/templates/base.html:29
+msgid "Profile"
+msgstr "Profile"
+
+#: app/templates/base.html:32
+msgid "Users"
+msgstr "Users"
+
+#: app/templates/base.html:38
+msgid "New fake users"
+msgstr "New fake users"
+
+#: app/templates/base.html:41
+msgid "Change Password"
+msgstr "Change Password"
+
+#: app/templates/base.html:42
+msgid "Change Email"
+msgstr "Change Email"
+
+#: app/templates/base.html:43
+msgid "Log Out"
+msgstr "Log Out"
+
+#: app/templates/base.html:71
+msgid "Web Programming Training, 2024"
+msgstr ""
 
 #: app/templates/index.html:7
 msgid "Stranger"
 msgstr "Stranger"
+
+#: app/templates/auth/login.html:4
+msgid "Flask Application Model - Login"
+msgstr "Flask Application Model - Login"
+
+#: app/templates/auth/login.html:13
+msgid "Forgot your password?"
+msgstr "Forgot your password?"
+
+#: app/templates/auth/login.html:13
+msgid "Click here to reset it"
+msgstr "Click here to reset it"
+
+#: app/templates/auth/login.html:14
+msgid "New user?"
+msgstr "New user?"
+
+#: app/templates/auth/login.html:14
+msgid "Click here to register"
+msgstr "Click here to register"
+
+#~ msgid "Log In"
+#~ msgstr "Log In"
+
+#~ msgid "Flask-sovellus"
+#~ msgstr "Flask-sovellus"
+
+#~ msgid "Web-ohjelmointikoulutus, 2024"
+#~ msgstr "Web-ohjelmointikoulutus, 2024"
 

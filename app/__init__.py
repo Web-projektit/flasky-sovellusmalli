@@ -13,7 +13,7 @@ import sys
 from datetime import datetime
 import pytz
 from flask_babel import Babel
-from flask_babel import _
+# from flask_babel import _
 
 class FinnishFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
@@ -22,9 +22,10 @@ class FinnishFormatter(logging.Formatter):
         return created_time.strftime(datefmt or '%Y-%m-%d %H:%M:%S')
 
 def get_locale():
-    # Valitse kieli pyynnön perusteella tai selaimen kieliasetuksista
-    selected_language = request.args.get('lang') or request.accept_languages.best_match(['fi', 'en'])
+    # Valitse kieli evästeen tai pyynnön perusteella tai selaimen kieliasetuksista
+    selected_language = request.cookies.get('lang') or request.args.get('lang') or request.accept_languages.best_match(['fi', 'en'])   
     print(f"Selected language: {selected_language}")  # Lisää tämä rivin tarkistamiseksi
+    g.lang = selected_language
     return selected_language
 
 csrf = CSRFProtect()
@@ -70,7 +71,7 @@ def create_app(config_name):
     csrf.init_app(app)
     login_manager.init_app(app) 
     babel.init_app(app, locale_selector=get_locale)
-    print("INIT HELLO: "+ _("Hello"))
+    # print("INIT HELLO: "+ _("Hello"))
  
    # Set Moment.js locale to Finnish
     # @app.context_processor
@@ -81,6 +82,8 @@ def create_app(config_name):
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+
 
     return app
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-12 23:31+0200\n"
+"POT-Creation-Date: 2024-11-14 16:17+0200\n"
 "PO-Revision-Date: 2024-11-12 23:31+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fi\n"
@@ -18,16 +18,164 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: app/__init__.py:73 app/main/views.py:47 app/main/views.py:48
-#: app/templates/index.html:7 sovellusmalli.py:47 sovellusmalli.py:57
+#: app/__init__.py:74 app/main/views.py:60 app/main/views.py:61
+#: Flask Application Model.py:48 Flask Application Model.py:58
 msgid "Hello"
-msgstr "Hei"
+msgstr "Moi"
 
-#: app/auth/views.py:51
+#: app/auth/forms.py:10 app/auth/forms.py:18 app/auth/forms.py:49
+msgid "Email"
+msgstr "Sähköposti"
+
+#: app/auth/forms.py:12 app/auth/forms.py:25 app/auth/forms.py:64
+msgid "Password"
+msgstr "Salasana"
+
+#: app/auth/forms.py:13
+msgid "Keep me logged in"
+msgstr "Pidä minut kirjautuneena"
+
+#: app/auth/forms.py:14
+msgid "Log In"
+msgstr "Kirjaudu"
+
+#: app/auth/forms.py:20
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
+#: app/auth/forms.py:23
+msgid "Usernames must have only letters, numbers, dots or underscores"
+msgstr ""
+"Käyttäjänimissä saa olla vain kirjaimia, numeroita, pisteitä tai "
+"alaviivoja"
+
+#: app/auth/forms.py:26 app/auth/forms.py:42
+msgid "Passwords must match."
+msgstr "Salasanojen on täsmättävä."
+
+#: app/auth/forms.py:27 app/auth/forms.py:57
+msgid "Confirm password"
+msgstr "Vahvista salasana"
+
+#: app/auth/forms.py:28
+msgid "Register"
+msgstr "Rekisteröidy"
+
+#: app/auth/forms.py:32 app/auth/forms.py:69
+msgid "Email already registered."
+msgstr "Sähköposti on jo rekisteröity."
+
+#: app/auth/forms.py:36
+msgid "Username already in use."
+msgstr "Käyttäjänimi on jo käytössä."
+
+#: app/auth/forms.py:40
+msgid "Old password"
+msgstr "Vanha salasana"
+
+#: app/auth/forms.py:41
+msgid "New password"
+msgstr "Uusi salasana"
+
+#: app/auth/forms.py:43
+msgid "Confirm new password"
+msgstr "Vahvista salasana"
+
+#: app/auth/forms.py:45
+msgid "Update Password"
+msgstr "Vaihda salasana"
+
+#: app/auth/forms.py:51 app/auth/forms.py:58
+msgid "Reset Password"
+msgstr "Uusi salasana"
+
+#: app/auth/forms.py:55
+msgid "New Password"
+msgstr "Uusi salasana"
+
+#: app/auth/forms.py:56
+msgid "Passwords must match"
+msgstr "Salasanojen on täsmättävä"
+
+#: app/auth/forms.py:62
+msgid "New Email"
+msgstr "Uusi sähköpostiosoite"
+
+#: app/auth/forms.py:65
+msgid "Update Email Address"
+msgstr "Päivitä sähköpostiosoite"
+
+#: app/auth/views.py:50 app/templates/base.html:45
 msgid "Login"
 msgstr "Kirjaudu"
+
+#: app/templates/base.html:3
+msgid "Flask Application Model"
+msgstr "Flask-sovellusmalli"
+
+#: app/templates/base.html:20
+msgid "Flask Application Model"
+msgstr "Flask-sovellusmalli"
+
+#: app/templates/base.html:27
+msgid "Home"
+msgstr "Etusivu"
+
+#: app/templates/base.html:29
+msgid "Profile"
+msgstr "Profiili"
+
+#: app/templates/base.html:32
+msgid "Users"
+msgstr "Käyttäjät"
+
+#: app/templates/base.html:38
+msgid "New fake users"
+msgstr "Uudet tekaistut käyttäjät"
+
+#: app/templates/base.html:41
+msgid "Change Password"
+msgstr "Vaihda salasana"
+
+#: app/templates/base.html:42
+msgid "Change Email"
+msgstr "Vaihda sähköpostiosoite"
+
+#: app/templates/base.html:43
+msgid "Log Out"
+msgstr "Kirjaudu ulos"
+
+#: app/templates/base.html:71
+msgid "Web Programming Training, 2024"
+msgstr "Web-ohjelmointikoulutus, 2024"
 
 #: app/templates/index.html:7
 msgid "Stranger"
 msgstr "Tuntematon"
+
+#: app/templates/auth/login.html:4
+msgid "Flask Application Model - Login"
+msgstr "Flask-sovellusmalli - Kirjaudu"
+
+#: app/templates/auth/login.html:13
+msgid "Forgot your password?"
+msgstr "Unohditko salasanasi?"
+
+#: app/templates/auth/login.html:13
+msgid "Click here to reset it"
+msgstr "Uusi sanasana"
+
+#: app/templates/auth/login.html:14
+msgid "New user?"
+msgstr "Uusi käyttäjä?"
+
+#: app/templates/auth/login.html:14
+msgid "Click here to register"
+msgstr "Rekisteröidy"
+
+#~ msgid "Flask-sovellus"
+#~ msgstr "Flask-sovellus"
+
+#~ msgid "Web-ohjelmointikoulutus, 2024"
+#~ msgstr "Web-ohjelmointikoulutus, 2024"
 

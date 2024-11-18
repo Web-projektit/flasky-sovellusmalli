@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% import "auth/wtf.html" as wtf %}
 
-{% block title %}Sovellusmalli - Login{% endblock %}
+{% block title %}{{ _('Flask Application Model - Login') }}{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
@@ -10,6 +10,6 @@
 <div class="lomake col-md-10 col-lg-8">
     {{ wtf.quick_form(form,novalidate=True,extra_classes='needs-validation') }}
 </div>
-<p>Forgot your password? <a href="{{ url_for('auth.password_reset_request') }}">Click here to reset it</a>.</p>
-<p>New user? <a href="{{ url_for('auth.register') }}">Click here to register</a>.</p>
+<p>{{ _('Forgot your password?') }} <a href="{{ url_for('auth.password_reset_request') }}">{{ _('Click here to reset it') }}</a>.</p>
+<p>{{ _('New user?') }} <a href="{{ url_for('auth.register') }}">{{ _('Click here to register') }}</a>.</p>
 {% endblock %}
