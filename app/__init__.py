@@ -72,7 +72,9 @@ def create_app(config_name):
     moment.init_app(app)
     mail.init_app(app)
     csrf.init_app(app)
-    CORS(app,supports_credentials=True,expose_headers=["Content-Type","X-CSRFToken"])
+    CORS(app,
+        supports_credentials=True,
+        expose_headers=["Content-Type","X-CSRFToken"])
 
     # db.init_app(app)
     try:

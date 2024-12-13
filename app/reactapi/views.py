@@ -25,6 +25,7 @@ def createResponse(message, status_code=200):
     origin = request.headers.get('Origin',default_origin)
     response = make_response(jsonify(message))
     # Access-Control-Allow-Credentials
+    # response.headers.set('Access-Control-Allow-Credentials',True)
     response.headers.set('Access-Control-Allow-Origin',origin)
     response.status_code = status_code
     return response
@@ -36,15 +37,15 @@ def handle_csrf_error(e):
     return createResponse(message, status_code=400)
 
 
-@reactapi.route('/csrf', methods=['GET'])
-def csrf():
+@reactapi.route('/getcsrf', methods=['GET'])
+def getcsrf():
     token = generate_csrf()
     response = jsonify({"detail": "CSRF cookie set"})
     response.headers.set("X-CSRFToken", token)
     return response
 
-@reactapi.route('/login', methods=['GET','POST'])
-def login():
+@reactapi.route('/signin', methods=['GET','POST'])
+def signin():
     print("reactapi,views.py,LOGIN")
     form = LoginForm()
     sys.stderr.write(f"\nreactapi,views.py,LOGIN data:{form.email.data}\n")
@@ -58,14 +59,22 @@ def login():
             sys.stderr.write(f"\nviews.py,LOGIN:OK, next:{next}, confirmed:{user.confirmed}\n")
             if next is None or not next.startswith('/'):
                 if user.confirmed:
-                    return createResponse({'success':True,'confirmed':'1'}, status_code=200)
+                    response = jsonify({'success':True,'confirmed':'1'})
+                    response.status_code=200
+                    return response
                 else:
-                    return createResponse({'success':True}, status_code=200)
+                    response = jsonify({'success':True})
+                    response.status_code=200
+                    return response
             return redirect(next)
         else:
-            return createResponse({'success':False,'message':"Väärät tunnukset"}, status_code=401)
+            response = jsonify({'success':False,'message':"Väärät tunnukset"})
+            response.status_code = 401
+            return response
     else:
-        return createResponse({
+        response = jsonify({
             "success": False,
             "message": "iedot on annettu väärin.",
-            "errors": form.errors }, status_code=400)
+            "errors": form.errors })
+        response.status_code=400
+        return response
