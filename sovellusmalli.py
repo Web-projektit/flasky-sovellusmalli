@@ -36,23 +36,26 @@ def test(test_names):
     unittest.TextTestRunner(verbosity=2).run(tests)
 
 # Lataa .mo-tiedosto
-
-'''
+"""
+from gettext import gettext
 @app.context_processor
 def inject_translations():
     return dict(_=gettext.gettext)
-'''
 
-# fi_translations = gettext.translation('messages', localedir='translations', languages=['fi'])
-# fi_translations.install()
-print("Python-käännös:"+ _("Hello"))
-
-
-mo_path = 'translations/fi/LC_MESSAGES/messages.mo'
-mo = polib.mofile(mo_path)
-
-# Tulosta kaikki käännökset
-for entry in mo:
-    print(f"Original: {entry.msgid}")
-    print(f"Translated: {entry.msgstr}")
-    print("Python-käännös: " + _("Hello"))
+fi_translations = gettext.translation('messages', localedir='translations', languages=['fi'])
+fi_translations.install()
+"""
+with app.app_context():
+    """
+    Tarvitaan app.app_context() alustetun Babelin käyttämiseen,
+    sillä sitä ei luoda sovelluksessa automaattisesti ilman http-kutsua (tai Flask shelliä).
+    """
+    print("Python-Hello-käännös:"+ _("Hello"))
+    mo_path = 'translations/fi/LC_MESSAGES/messages.mo'
+    mo = polib.mofile(mo_path)
+    # Tulosta kaikki käännökset
+    for entry in mo:
+        pass
+        # print(f"Original: {entry.msgid}")
+        # print(f"Translated: {entry.msgstr}")
+        # print("Babel-käännös: " + _(entry.msgid))

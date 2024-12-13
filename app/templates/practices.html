@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Flask Application Model{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+<h1>{{ _('Best Practices in Web Programming') }}</h1>
+</div>
+
+<div>
+    <ol>
+    {% for item in content %}
+    <li><strong>{{ item['practice'] }}.</strong> {{ item['description'] }}</li>
+    {% endfor %}
+    </ol>
+</div>
+
+<div>
+    {% if duplicates and duplicates|length > 0 %}
+    <h2>Potential duplicates</h2>
+    <ul style="list-style-type: none; padding-left:0;">
+    {% for item in duplicates %}
+    <li>{{ item.id }}. <strong>{{ item.practice }}</strong> {{ item.description }}</li>
+    {% endfor %}
+    </ul>
+    {% else %}
+    <p>No potential duplicates found.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

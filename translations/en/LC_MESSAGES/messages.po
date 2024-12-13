@@ -10,16 +10,16 @@ msgstr ""
 "POT-Creation-Date: 2024-11-14 16:17+0200\n"
 "PO-Revision-Date: 2024-11-12 23:32+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: en\n"
 "Language-Team: en <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: app/__init__.py:74 app/main/views.py:60 app/main/views.py:61
-#: Flask Application Model.py:48 Flask Application Model.py:58
+#: app/__init__.py:74 app/main/views.py:60 app/main/views.py:61 Flask
+#: Application Model.py:48 Flask Application Model.py:58
 msgid "Hello"
 msgstr "Hello"
 
@@ -113,7 +113,7 @@ msgstr "Flask Application Model"
 
 #: app/templates/base.html:20
 msgid "Flask Application Model"
-msgstr ""
+msgstr "Flask Application Model"
 
 #: app/templates/base.html:27
 msgid "Home"
@@ -145,7 +145,7 @@ msgstr "Log Out"
 
 #: app/templates/base.html:71
 msgid "Web Programming Training, 2024"
-msgstr ""
+msgstr "Web Programming Training, 2024"
 
 #: app/templates/index.html:7
 msgid "Stranger"
@@ -179,4 +179,3 @@ msgstr "Click here to register"
 
 #~ msgid "Web-ohjelmointikoulutus, 2024"
 #~ msgstr "Web-ohjelmointikoulutus, 2024"
-

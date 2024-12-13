@@ -1,9 +1,7 @@
 # Configuration settings for the Flask application
-
 import os
 from datetime import datetime
 import pytz
-
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 helsinki_tz = pytz.timezone('Europe/Helsinki')
@@ -15,9 +13,12 @@ def get_datetime(tz=helsinki_tz, format='%Y-%m-%d %H:%M:%S'):
 
 class Config:
     GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
-    BABEL_DEFAULT_LOCALE = 'fi'
+    BABEL_DEFAULT_LOCALE = 'en'
     BABEL_SUPPORTED_LOCALES = ['fi', 'en']
+    BABEL_DEFAULT_TIMEZONE = 'Europe/Helsinki'
     BABEL_TRANSLATION_DIRECTORIES = '../translations'
+    SUPPORTED_LANGUAGES = {'en':'English', 'fi':'Finnish'}      
+    PREFERRED_LOCALE = 'fi'
 
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'Vaikeasti arvattavissa oleva salasana'
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.googlemail.com')
@@ -33,6 +34,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FS_POSTS_PER_PAGE = 25
     WTF_CSRF_ENABLED = True
+    CORS_HEADERS = 'Content-Type'
     UPLOAD_FOLDER = 'profiilikuvat/'
     ALLOWED_EXTENSIONS = ['png','jpg','jpeg','gif']
     # Huom. MAX_CONTENT_LENGTH aiheuttaa HTTP-virheen Error 413 Request Entity Too Large
@@ -44,7 +46,18 @@ class Config:
 
     @staticmethod
     def init_app(app):
-        
+        '''
+        Esimerkki demokäyttäjän lisäämisestä taulun alustamiseksi.
+        from app.models import User
+        from app import db
+        with app.app_context():
+            print(app.config['SQLALCHEMY_DATABASE_URI'])
+            if User.query.count() == 0:
+                demo_user = User(username='demo', email='demo@example.com')
+                demo_user.set_password('demopassword')  # Adjust the method as necessary
+                db.session.add(demo_user)
+                db.session.commit()
+        '''      
         kuvapolku = app.config['KUVAPOLKU']
         if not os.path.exists(kuvapolku):
             try:
@@ -72,6 +85,7 @@ class XamppConfig(Config):
     DB_NAME= os.environ.get('DB_NAME') or 'sovellusmalli'
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://'+DB_USERNAME+':'+DB_PASSWORD+'@'+DB_HOST+':'+DB_PORT+'/'+DB_NAME
     print("SQLALCHEMY_DATABASE_URI: "+SQLALCHEMY_DATABASE_URI)
+    DEFAULT_ORIGIN = 'http://localhost:5176'
 
 class ProductionConfig(XamppConfig):
     DEBUG = False

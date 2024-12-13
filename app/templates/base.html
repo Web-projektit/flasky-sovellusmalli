@@ -1,4 +1,5 @@
 {% extends "bootstrap/base.html" %}
+{% block html_attribs %} lang="{{ g.lang }}"{% endblock html_attribs %}
 
 {% block title %}{{ _('Flask Application Model') }}{% endblock %}
 
@@ -13,10 +14,10 @@
 {% endblock %}
 
 {% block navbar %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Main navigation">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <img src="{{ url_for('static', filename='omniamusta_eitaustaa.png') }}" alt="Logo" style="height: 30px;">
+      <a class="navbar-brand" href="#" aria-label="Home">
+        <img src="{{ url_for('static', filename='omniamusta_eitaustaa.png') }}" alt="Logo" style="height: 30px;" aria-label="Logo">
         {{ _('Flask Application Model') }}
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,42 +25,45 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-link{{ ' active' if request.endpoint == 'main.index' }}" href="{{ url_for('main.index') }}">{{ _('Home') }}</a>
+          <a class="nav-link{{ ' active' if request.endpoint == 'main.index' }}" href="{{ url_for('main.index') }}" aria-label="Home">{{ _('Home') }}</a>
           {% if current_user.is_authenticated %} 
-          <a class="nav-link{{ ' active' if request.endpoint == 'main.user' }}" href="{{ url_for('main.user', username=current_user.username) }}">{{ _('Profile') }}</a>
+          <a class="nav-link{{ ' active' if request.endpoint == 'main.user' }}" href="{{ url_for('main.user', username=current_user.username) }}" aria-label="Profile">{{ _('Profile') }}</a>
           {% endif %} 
           {% if current_user.is_administrator() %}
-          <a class="nav-link{{ ' active' if request.endpoint == 'main.users' }}" href="{{ url_for('main.users') }}">{{ _('Users') }}</a>
+          <a class="nav-link{{ ' active' if request.endpoint == 'main.users' }}" href="{{ url_for('main.users') }}" aria-label="Users">{{ _('Users') }}</a>
+          <a class="nav-link{{ ' active' if request.endpoint == 'main.principles' }}" href="{{ url_for('main.principles') }}" aria-label="Programming principles">{{ _('Principles') }}</a>
+          <a class="nav-link{{ ' active' if request.endpoint == 'main.practises' }}" href="{{ url_for('main.practices') }}" aria-label="Web programming practices">{{ _('Practices') }}</a>
+          <a class="nav-link{{ ' active' if request.endpoint == 'main.translate' }}" href="{{ url_for('main.translate') }}" aria-label="Translate">{{ _('Translate') }}</a>
           {% endif %} 
         </div>
         {# ms-auto jälkeen oikeaan reunaan #}
         <div class="navbar-nav ms-auto">
           {% if current_user.is_administrator() %} 
-          <a class="nav-link{{ ' active' if request.endpoint == 'auth.faker' }}" href="{{ url_for('auth.faker') }}">{{ _('New fake users') }}</a>
+          <a class="nav-link{{ ' active' if request.endpoint == 'auth.faker' }}" href="{{ url_for('auth.faker') }}" aria-label="New fake users">{{ _('New fake users') }}</a>
           {% endif %} 
           {% if current_user.is_authenticated %}
-          <a class="nav-link{{ ' active' if request.endpoint == 'auth.change_password' }}" href="{{ url_for('auth.change_password') }}">{{ _('Change Password') }}</a>
-          <a class="nav-link{{ ' active' if request.endpoint == 'auth.change_email_request' }}" href="{{ url_for('auth.change_email_request') }}">{{ _('Change Email') }}</a>
-          <a class="nav-link{{ ' active' if request.endpoint == 'auth.logout' }}" href="{{ url_for('auth.logout') }}">{{ _('Log Out') }}</a>
+          <a class="nav-link{{ ' active' if request.endpoint == 'auth.change_password' }}" href="{{ url_for('auth.change_password') }}" aria-label="Change Password">{{ _('Change Password') }}</a>
+          <a class="nav-link{{ ' active' if request.endpoint == 'auth.change_email_request' }}" href="{{ url_for('auth.change_email_request') }}" aria-label="Change Email">{{ _('Change Email') }}</a>
+          <a class="nav-link{{ ' active' if request.endpoint == 'auth.logout' }}" href="{{ url_for('auth.logout') }}" aria-label="Log Out">{{ _('Log Out') }}</a>
           {% else %}
-          <a class="nav-link{{ ' active' if request.endpoint == 'auth.login' }}" href="{{ url_for('auth.login') }}">{{ _('Login') }}</a>
+          <a class="nav-link{{ ' active' if request.endpoint == 'auth.login' }}" href="{{ url_for('auth.login') }}" aria-label="Log In">{{ _('Login') }}</a>
           {% endif %}
 
       </div>
     </div>
   </nav>
   <div class="language-links">
-  <a class="{% if g.lang == 'en' %}disabled-link{% endif %}" href="{{ url_for('main.set_language', lang='en') }}">English</a> |
-  <a class="{% if g.lang == 'fi' %}disabled-link{% endif %}" href="{{ url_for('main.set_language', lang='fi') }}">Suomi</a>
+  <a class="{% if g.lang == 'en' %}disabled-link{% endif %}" href="{{ url_for('main.set_language', lang='en') }}">{{ _('English') }}</a> |
+  <a class="{% if g.lang == 'fi' %}disabled-link{% endif %}" href="{{ url_for('main.set_language', lang='fi') }}">{{ _('Suomi') }}</a>
  </div>  
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container" aria-label="Main content">
     {% for category,message in get_flashed_messages(with_categories=True) %}
     {% set category = 'warning' if not category or category == 'message' else category %}
-    <div class="alert alert-{{ category }}">
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <div class="alert alert-{{ category }}" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         {{ message }}
     </div>
    
@@ -67,7 +71,7 @@
 
     {% block page_content %}{% endblock %}
 </div>
-<footer id="footer">
+<footer id="footer" aria-label="Footer">
 <span>&copy; {{ _('Web Programming Training, 2024') }}</span>
 </footer>
 {% endblock %}

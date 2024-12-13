@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-14 16:17+0200\n"
+"POT-Creation-Date: 2024-11-28 19:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: app/__init__.py:74 app/main/views.py:60 app/main/views.py:61
-#: sovellusmalli.py:48 sovellusmalli.py:58
+#: app/__init__.py:91 app/main/views.py:103 app/main/views.py:104
+#: sovellusmalli.py:53
 msgid "Hello"
 msgstr ""
 
@@ -102,47 +102,63 @@ msgstr ""
 msgid "Update Email Address"
 msgstr ""
 
-#: app/auth/views.py:50 app/templates/base.html:45
+#: app/auth/views.py:50 app/templates/base.html:49
 msgid "Login"
 msgstr ""
 
-#: app/templates/base.html:3
-msgid "Sovellusmalli"
-msgstr ""
-
-#: app/templates/base.html:20
+#: app/templates/base.html:4 app/templates/base.html:21
 msgid "Flask Application Model"
 msgstr ""
 
-#: app/templates/base.html:27
+#: app/templates/base.html:28
 msgid "Home"
 msgstr ""
 
-#: app/templates/base.html:29
+#: app/templates/base.html:30
 msgid "Profile"
 msgstr ""
 
-#: app/templates/base.html:32
+#: app/templates/base.html:33
 msgid "Users"
 msgstr ""
 
-#: app/templates/base.html:38
-msgid "New fake users"
+#: app/templates/base.html:34
+msgid "Principles"
 msgstr ""
 
-#: app/templates/base.html:41
-msgid "Change Password"
+#: app/templates/base.html:35
+msgid "Practices"
+msgstr ""
+
+#: app/templates/base.html:36
+msgid "Translate"
 msgstr ""
 
 #: app/templates/base.html:42
+msgid "New fake users"
+msgstr ""
+
+#: app/templates/base.html:45
+msgid "Change Password"
+msgstr ""
+
+#: app/templates/base.html:46
 msgid "Change Email"
 msgstr ""
 
-#: app/templates/base.html:43
+#: app/templates/base.html:47
 msgid "Log Out"
 msgstr ""
 
-#: app/templates/base.html:71
+#: app/templates/base.html:56
+msgid "English"
+msgstr ""
+
+#: app/templates/base.html:57
+msgid "Suomi"
+msgstr ""
+
+#: app/templates/base.html:75
 msgid "Web Programming Training, 2024"
 msgstr ""
 
@@ -150,8 +166,16 @@ msgstr ""
 msgid "Stranger"
 msgstr ""
 
+#: app/templates/practices.html:7
+msgid "Best Practices in Web Programming"
+msgstr ""
+
+#: app/templates/principles.html:7
+msgid "Programming Principles"
+msgstr ""
+
 #: app/templates/auth/login.html:4
-msgid "Sovellusmalli - Login"
+msgid "Flask Application Model - Login"
 msgstr ""
 
 #: app/templates/auth/login.html:13
