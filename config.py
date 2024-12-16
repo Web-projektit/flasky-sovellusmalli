@@ -85,7 +85,13 @@ class XamppConfig(Config):
     DB_NAME= os.environ.get('DB_NAME') or 'sovellusmalli'
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://'+DB_USERNAME+':'+DB_PASSWORD+'@'+DB_HOST+':'+DB_PORT+'/'+DB_NAME
     print("SQLALCHEMY_DATABASE_URI: "+SQLALCHEMY_DATABASE_URI)
-    DEFAULT_ORIGIN = 'http://localhost:5176'
+    DEFAULT_ORIGIN = 'http://localhost:5173'
+    REACT_ORIGIN = 'http://localhost:5173/'
+    # REACT_ORIGIN = '/react-sovellusmalli/'
+    REACT_LOGIN = REACT_ORIGIN + 'login'
+    REACT_UNCONFIRMED = REACT_ORIGIN + 'unconfirmed'
+    REACT_CONFIRMED = REACT_ORIGIN + 'confirmed'
+
 
 class ProductionConfig(XamppConfig):
     DEBUG = False

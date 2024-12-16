@@ -6,7 +6,8 @@ from flask_login import (
     login_required, current_user )
 from ..decorators import admin_required,debuggeri
 from ..models import User
-from ..auth.forms import LoginForm
+from ..auth.forms import LoginForm, SignupForm
+from ..email import send_email
 from app import db
 from . import reactapi
 from sqlalchemy import text
@@ -29,6 +30,21 @@ def createResponse(message, status_code=200):
     response.headers.set('Access-Control-Allow-Origin',origin)
     response.status_code = status_code
     return response
+
+
+@reactapi.app_errorhandler(401)
+def page_not_allowed(e):
+    app = current_app._get_current_object()
+    app.logger.debug('reactapi.app_errorhandler 401,endpoint %s', request.endpoint)
+    app.logger.debug('reactapi.app_errorhandler 401,path %s', request.path)
+    if request.endpoint == 'reactapi.confirm':
+        # Vrt. vastaava Flask route:
+        # login_url = url_for('login', confirm_token=confirm_token, _external=True)
+        redirect_url = app.config['REACT_LOGIN'] + "?next=" + request.path
+        return redirect(redirect_url)
+    message = {'virhe':'Kirjautuminen puuttuu.'}
+    return createResponse(message)
+
 
 @reactapi.app_errorhandler(CSRFError)
 def handle_csrf_error(e):
@@ -74,7 +90,68 @@ def signin():
     else:
         response = jsonify({
             "success": False,
-            "message": "iedot on annettu väärin.",
+            "message": "Tiedot on annettu väärin.",
             "errors": form.errors })
         response.status_code=400
+        return response
+    
+
+@reactapi.route('/signup', methods=['GET', 'POST'])
+# Määritetään CORS-alustuksessa
+# @cross_origin(supports_credentials=True)
+def signup():
+    form = SignupForm()
+    sys.stderr.write('\nviews.py,SIGNUP,email:'+form.email.data+'\n')
+    if form.validate_on_submit():
+        user = User(email=form.email.data.lower(),
+                    password=form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        token = user.generate_confirmation_token()
+        send_email(user.email, 'Confirm Your Account',
+                   'reactapi/email/confirm', user=user, token=token)
+        # Huom. ilmoitus sähköpostivahvistuksesta tarvitaan käyttöliittymään
+        # flash('A confirmation email has been sent to you by email.')
+        response = jsonify({'success':True,'data':'OK'})
+        response.status_code = 200
+        return response
+    else:
+        sys.stderr.write("validointivirheet:"+str(form.errors))
+        # return "Virhe lomakkeessa:"+str(form.errors)
+        response = jsonify({'success':False,
+                           'message':'Tiedot väärin.',
+                           'errors':form.errors})
+        response.status_code = 200
+        return response
+
+
+@reactapi.route('/logout', methods=['GET'])
+def logout():
+    logout_user()
+    response = jsonify({'success':True})
+    response.status_code=200
+    return response
+
+
+@reactapi.route('/confirm/<token>', methods=['GET'])
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        response = jsonify({'success':True,
+                            'message':'Tunnus on jo vahvistettu',
+                            'redirect':'/confirmed'})
+        response.status_code = 200
+        return response
+    if current_user.confirm(token):
+        db.session.commit()
+        response = jsonify({'success':True,
+                            'message':'Tunnus on vahvistettu',
+                            'confirmed':'1'
+                            })
+        response.status_code = 200
+        return response
+    else:
+        response = jsonify({'success':False,
+                            'message':'Vahvistus epäonnistui'})
+        response.status_code = 200
         return response
