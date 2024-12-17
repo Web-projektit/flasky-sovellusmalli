@@ -76,7 +76,7 @@ class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
         'sqlite://'
 
-class XamppConfig(Config):
+class XamppDBConfig(Config):
     DEBUG = True
     DB_USERNAME= os.environ.get('DB_USERNAME') or 'root'
     DB_PASSWORD= os.environ.get('DB_PASSWORD') or ''
@@ -92,8 +92,15 @@ class XamppConfig(Config):
     REACT_UNCONFIRMED = REACT_ORIGIN + 'unconfirmed'
     REACT_CONFIRMED = REACT_ORIGIN + 'confirmed'
 
+class XamppConfig(XamppDBConfig):
+    DEFAULT_ORIGIN = 'http://localhost/projektit_react/react-sovellusmalli'
+    REACT_ORIGIN = DEFAULT_ORIGIN + '/'
+    REACT_LOGIN = REACT_ORIGIN + 'login'
+    REACT_UNCONFIRMED = REACT_ORIGIN + 'unconfirmed'
+    REACT_CONFIRMED = REACT_ORIGIN + 'confirmed'
 
-class ProductionConfig(XamppConfig):
+
+class ProductionConfig(XamppDBConfig):
     DEBUG = False
     DIR = '/home'
     KUVAPOLKU = os.path.join(DIR, Config.UPLOAD_FOLDER)
@@ -102,6 +109,7 @@ config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
     'production': ProductionConfig,
+    'xamppdb': XamppDBConfig,
     'xampp': XamppConfig,
     'default': XamppConfig
 }

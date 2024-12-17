@@ -74,14 +74,10 @@ def signin():
             next = request.args.get('next')
             sys.stderr.write(f"\nviews.py,LOGIN:OK, next:{next}, confirmed:{user.confirmed}\n")
             if next is None or not next.startswith('/'):
-                if user.confirmed:
-                    response = jsonify({'success':True,'confirmed':'1'})
-                    response.status_code=200
-                    return response
-                else:
-                    response = jsonify({'success':True})
-                    response.status_code=200
-                    return response
+                response = jsonify({'success':True,'confirmed':user.confirmed})
+                response.status_code=200
+                return response
+            # Huom. Uudelleen reititys tapahtuu selaimen kautta
             return redirect(next)
         else:
             response = jsonify({'success':False,'message':"Väärät tunnukset"})
@@ -136,22 +132,25 @@ def logout():
 @reactapi.route('/confirm/<token>', methods=['GET'])
 @login_required
 def confirm(token):
+    app = current_app._get_current_object()
+    app.logger.debug('/confirm,current_user: %s',current_user.email)
+    app.logger.debug('/confirm,confirmed: %s',current_user.confirmed)
+    # app.logger.debug('/confirm,headers:' + str(request.headers))
     if current_user.confirmed:
-        response = jsonify({'success':True,
-                            'message':'Tunnus on jo vahvistettu',
-                            'redirect':'/confirmed'})
-        response.status_code = 200
-        return response
+        app.logger.debug('/confirm,REACT_CONFIRMED:' + app.config['REACT_CONFIRMED'])
+        return redirect(app.config['REACT_CONFIRMED'] + '?confirmed=1')
     if current_user.confirm(token):
+        app.logger.debug('/confirm:confirmed')
         db.session.commit()
         response = jsonify({'success':True,
                             'message':'Tunnus on vahvistettu',
-                            'confirmed':'1'
+                            'confirmed':True
                             })
         response.status_code = 200
         return response
     else:
         response = jsonify({'success':False,
-                            'message':'Vahvistus epäonnistui'})
+                            'message':'Vahvistus epäonnistui',
+                            'confirmed':False})   
         response.status_code = 200
         return response

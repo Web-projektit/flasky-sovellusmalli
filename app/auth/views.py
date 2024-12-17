@@ -22,6 +22,8 @@ def before_request():
         if not current_user.confirmed \
             and request.endpoint \
             and request.blueprint != 'auth' \
+            and request.blueprint != 'react' \
+            and request.blueprint != 'reactapi' \
             and request.endpoint != 'static':
                 return redirect(url_for('auth.unconfirmed'))
 
