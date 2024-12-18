@@ -70,15 +70,16 @@ def signin():
         user = User.query.filter_by(email=form.email.data.lower()).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
+            admin = user.is_administrator()
             sys.stderr.write(f"\nviews.py,LOGIN, request.args:{request.args}\n")
             next = request.args.get('next')
             sys.stderr.write(f"\nviews.py,LOGIN:OK, next:{next}, confirmed:{user.confirmed}\n")
-            if next is None or not next.startswith('/'):
-                response = jsonify({'success':True,'confirmed':user.confirmed})
-                response.status_code=200
-                return response
+            # if next is None or not next.startswith('/'):
+            response = jsonify({'success':True,'confirmed':user.confirmed,'admin':admin})
+            response.status_code=200
+            return response
             # Huom. Uudelleen reititys tapahtuu selaimen kautta
-            return redirect(next)
+  
         else:
             response = jsonify({'success':False,'message':"Väärät tunnukset"})
             response.status_code = 401
@@ -108,7 +109,7 @@ def signup():
                    'reactapi/email/confirm', user=user, token=token)
         # Huom. ilmoitus sähköpostivahvistuksesta tarvitaan käyttöliittymään
         # flash('A confirmation email has been sent to you by email.')
-        response = jsonify({'success':True,'data':'OK'})
+        response = jsonify({'success':True,'confirming':True})
         response.status_code = 200
         return response
     else:
@@ -116,6 +117,7 @@ def signup():
         # return "Virhe lomakkeessa:"+str(form.errors)
         response = jsonify({'success':False,
                            'message':'Tiedot väärin.',
+                           'confirming':True,
                            'errors':form.errors})
         response.status_code = 200
         return response
@@ -154,3 +156,15 @@ def confirm(token):
                             'confirmed':False})   
         response.status_code = 200
         return response
+
+
+@reactapi.route('/confirm')
+@login_required
+def resend_confirmation():
+    token = current_user.generate_confirmation_token()
+    app = current_app._get_current_object()
+    app.logger.debug('/confirm: %s',current_user.email)
+    send_email(current_user.email, 'Confirm Your Account',
+               'reactapi/email/confirm', user=current_user, token=token)
+    message = 'A new confirmation email has been sent to you by email.'
+    return jsonify({'success':True,'message':message})
